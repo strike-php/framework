@@ -31,6 +31,7 @@ class Filesystem
         \unlink($path);
     }
 
+    /** @return \SplFileInfo[] */
     public function allFiles(string $path, ?string $suffix = null, bool $ignoreHidden = true): array
     {
         $finder = $this->finderFactory
