@@ -18,8 +18,8 @@ class EnvironmentLoaderTest extends TestCase
     public function testItLoadsValuesFromEnvFiles(): void
     {
         $loader = new EnvironmentLoader();
-
-        $env = $loader->load([__DIR__ . '/fixtures'], ['.env']);
+        $files = [new \SplFileInfo(__DIR__ . '/fixtures/.env')];
+        $env = $loader->load($files);
 
         // FOO is a key in the loaded .env file
         self::assertEquals('bar', $env->get('FOO'));
@@ -29,7 +29,11 @@ class EnvironmentLoaderTest extends TestCase
     {
         $loader = new EnvironmentLoader();
 
-        $env = $loader->load([__DIR__ . '/fixtures'], ['.env', '.env-2']);
+        $files = [
+            new \SplFileInfo(__DIR__ . '/fixtures/.env'),
+            new \SplFileInfo(__DIR__ . '/fixtures/.env-2'),
+        ];
+        $env = $loader->load($files);
 
         self::assertEquals('bar', $env->get('FOO'));
         // BAR is the key in the loaded .env-2 file

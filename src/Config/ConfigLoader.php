@@ -14,18 +14,13 @@ class ConfigLoader
     ) {
     }
 
-    public function load(string $configPath, string $cachedConfigPath, Environment $env): Config
+    public function load(string $configFilesPath, Environment $env): Config
     {
-        if ($this->filesystem->exists($cachedConfigPath)) {
-            return new Config(require $cachedConfigPath);
-        }
         $config = new Config();
 
-        foreach ($this->prepareConfigFiles($configPath) as $key => $path) {
+        foreach ($this->prepareConfigFiles($configFilesPath) as $key => $path) {
             $config->set($key, require $path);
         }
-
-        $this->dumpConfig($cachedConfigPath, $config->all());
 
         return $config;
     }
@@ -54,13 +49,5 @@ class ConfigLoader
         }
 
         return $prefix;
-    }
-
-    private function dumpConfig(string $path, array $config): void
-    {
-        $this->filesystem->put(
-            $path,
-            '<?php return ' . \var_export($config, true) . ';' . PHP_EOL,
-        );
     }
 }

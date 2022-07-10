@@ -10,13 +10,8 @@ use PHPUnit\Framework\TestCase;
 
 class ConfigLoaderTest extends TestCase
 {
-    private string $cacheFileName;
-
-    protected function setUp(): void
-    {
-        $this->cacheFileName = __DIR__ . '/fixtures/cache/test.php';
-        @\unlink($this->cacheFileName);
-    }
+    private string $cacheFileName = __DIR__ . '/../../Fixtures/cache/test.php';
+    private string $configFilesPath = __DIR__ . '/../../Fixtures/config/config';
 
     protected function tearDown(): void
     {
@@ -28,8 +23,7 @@ class ConfigLoaderTest extends TestCase
         $loader = new ConfigLoader();
 
         $config = $loader->load(
-            __DIR__ . '/fixtures/config',
-            $this->cacheFileName,
+            $this->configFilesPath,
             new Environment(['FOO' => 'bar']),
         );
 
@@ -41,30 +35,10 @@ class ConfigLoaderTest extends TestCase
         $loader = new ConfigLoader();
 
         $config = $loader->load(
-            __DIR__ . '/fixtures/config',
-            $this->cacheFileName,
+            $this->configFilesPath,
             new Environment(['AWS_CLIENT_ID' => 'abc123']),
         );
 
         self::assertEquals('abc123', $config->get('nested.aws.client_id'));
-    }
-
-    public function testItLoadsFileFromCacheIfPresent(): void
-    {
-        $loader = new ConfigLoader();
-
-        self::assertFileDoesNotExist($this->cacheFileName);
-        $loader->load(
-            __DIR__ . '/fixtures/config',
-            $this->cacheFileName,
-            new Environment(['AWS_CLIENT_ID' => 'abc123']),
-        );
-
-        self::assertFileExists($this->cacheFileName);
-        $loader->load(
-            __DIR__ . '/fixtures/config',
-            $this->cacheFileName,
-            new Environment(['AWS_CLIENT_ID' => 'abc123']),
-        );
     }
 }
