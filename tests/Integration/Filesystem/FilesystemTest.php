@@ -1,11 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Bambamboole\Framework\Integration\Filesystem;
 
 use Bambamboole\Framework\Filesystem\Filesystem;
-use Bambamboole\Framework\Filesystem\FinderFactory;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Finder\Finder;
 
 class FilesystemTest extends TestCase
 {
@@ -45,8 +45,8 @@ class FilesystemTest extends TestCase
 
     public function testPutAndGetAndRemoveFile(): void
     {
-        $testContent = bin2hex(random_bytes(10));
-        $path = __DIR__ . '/fixtures/' . uniqid() . '.php';
+        $testContent = \bin2hex(\random_bytes(10));
+        $path = __DIR__ . '/fixtures/' . \uniqid() . '.php';
         $fs = new Filesystem();
 
         $fs->put($path, $testContent);

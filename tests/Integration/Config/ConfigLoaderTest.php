@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Bambamboole\Framework\Integration\Config;
 
 use Bambamboole\Framework\Config\ConfigLoader;
@@ -13,12 +15,12 @@ class ConfigLoaderTest extends TestCase
     protected function setUp(): void
     {
         $this->cacheFileName = __DIR__ . '/fixtures/cache/test.php';
-        @unlink($this->cacheFileName);
+        @\unlink($this->cacheFileName);
     }
 
     protected function tearDown(): void
     {
-        @unlink($this->cacheFileName);
+        @\unlink($this->cacheFileName);
     }
 
     public function testItCanLoadConfigFiles(): void
@@ -28,7 +30,7 @@ class ConfigLoaderTest extends TestCase
         $config = $loader->load(
             __DIR__ . '/fixtures/config',
             $this->cacheFileName,
-            new Environment(['FOO' => 'bar'])
+            new Environment(['FOO' => 'bar']),
         );
 
         self::assertEquals('bar', $config->get('app.test'));
@@ -41,7 +43,7 @@ class ConfigLoaderTest extends TestCase
         $config = $loader->load(
             __DIR__ . '/fixtures/config',
             $this->cacheFileName,
-            new Environment(['AWS_CLIENT_ID' => 'abc123'])
+            new Environment(['AWS_CLIENT_ID' => 'abc123']),
         );
 
         self::assertEquals('abc123', $config->get('nested.aws.client_id'));
@@ -55,14 +57,14 @@ class ConfigLoaderTest extends TestCase
         $loader->load(
             __DIR__ . '/fixtures/config',
             $this->cacheFileName,
-            new Environment(['AWS_CLIENT_ID' => 'abc123'])
+            new Environment(['AWS_CLIENT_ID' => 'abc123']),
         );
 
         self::assertFileExists($this->cacheFileName);
         $loader->load(
             __DIR__ . '/fixtures/config',
             $this->cacheFileName,
-            new Environment(['AWS_CLIENT_ID' => 'abc123'])
+            new Environment(['AWS_CLIENT_ID' => 'abc123']),
         );
     }
 }

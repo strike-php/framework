@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Bambamboole\Framework\Unit\Config;
 
 use Bambamboole\Framework\Config\Config;

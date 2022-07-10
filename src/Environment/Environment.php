@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Bambamboole\Framework\Environment;
 
 class Environment
@@ -15,7 +17,7 @@ class Environment
 
     private function cast(mixed $value): mixed
     {
-        return match (gettype($value)) {
+        return match (\gettype($value)) {
             'string' => $this->castString($value),
             'integer' => $value,
             default => throw new \Exception('Cast from type not yet implemented :('),

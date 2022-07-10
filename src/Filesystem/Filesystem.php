@@ -1,33 +1,34 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Bambamboole\Framework\Filesystem;
 
 class Filesystem
 {
     public function __construct(
-        private readonly FinderFactory $finderFactory = new FinderFactory()
-    )
-    {
+        private readonly FinderFactory $finderFactory = new FinderFactory(),
+    ) {
     }
 
     public function exists(string $filePath): bool
     {
-        return file_exists($filePath);
+        return \file_exists($filePath);
     }
 
     public function put(string $path, string $content): bool
     {
-        return !(file_put_contents($path, $content) === false);
+        return !(\file_put_contents($path, $content) === false);
     }
 
     public function get(string $path): string
     {
-        return file_get_contents($path);
+        return \file_get_contents($path);
     }
 
     public function remove(string $path): void
     {
-        unlink($path);
+        \unlink($path);
     }
 
     public function allFiles(string $path, ?string $suffix = null, bool $ignoreHidden = true): array
@@ -38,16 +39,14 @@ class Filesystem
             ->in($path)
             ->sortByName();
 
-        if ($ignoreHidden === false){
+        if ($ignoreHidden === false) {
             $finder->ignoreDotFiles(false);
         }
 
         if ($suffix) {
-            $finder->name('*.' . ltrim($suffix, '*.'));
+            $finder->name('*.' . \ltrim($suffix, '*.'));
         }
 
-        return iterator_to_array($finder, false);
+        return \iterator_to_array($finder, false);
     }
-
-
 }

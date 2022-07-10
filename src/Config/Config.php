@@ -1,25 +1,27 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Bambamboole\Framework\Config;
 
 class Config
 {
     public function __construct(private array $config = [])
     {
-
     }
 
     public function get(string $key, mixed $default = null): mixed
     {
-        if (str_contains($key, '.')) {
+        if (\str_contains($key, '.')) {
             $block = $this->config;
-            foreach (explode('.', $key) as $segment) {
-                if (is_array($block) && array_key_exists($segment, $block)) {
+            foreach (\explode('.', $key) as $segment) {
+                if (\is_array($block) && \array_key_exists($segment, $block)) {
                     $block = $block[$segment];
                 } else {
                     return $this->getValue($default);
                 }
             }
+
             return $block;
         }
 
@@ -28,20 +30,21 @@ class Config
 
     public function set(string $key, mixed $value): void
     {
-        if (str_contains($key, '.')) {
+        if (\str_contains($key, '.')) {
             $reference = &$this->config;
-            $keys = explode('.', $key);
+            $keys = \explode('.', $key);
             foreach ($keys as $i => $segment) {
-                if (count($keys) === 1) {
+                if (\count($keys) === 1) {
                     break;
                 }
                 unset($keys[$i]);
-                if (!array_key_exists($segment, $reference)) {
+                if (!\array_key_exists($segment, $reference)) {
                     $reference[$segment] = [];
                 }
                 $reference = &$reference[$segment];
             }
-            $reference[array_shift($keys)] = $value;
+            $reference[\array_shift($keys)] = $value;
+
             return;
         }
 

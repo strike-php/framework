@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Bambamboole\Framework\Config;
 
 use Bambamboole\Framework\Environment\Environment;
@@ -9,8 +11,7 @@ class ConfigLoader
 {
     public function __construct(
         private readonly Filesystem $filesystem = new Filesystem(),
-    )
-    {
+    ) {
     }
 
     public function load(string $configPath, string $cachedConfigPath, Environment $env): Config
@@ -35,21 +36,21 @@ class ConfigLoader
 
         foreach ($this->filesystem->allFiles($path, '.php') as $file) {
             $prefix = $this->generatePrefix($file, $path);
-            $configName = basename($file->getRealPath(), '.php');
+            $configName = \basename($file->getRealPath(), '.php');
             $files[$prefix . $configName] = $file->getRealPath();
         }
 
-        ksort($files, SORT_NATURAL);
+        \ksort($files, SORT_NATURAL);
 
         return $files;
     }
 
     private function generatePrefix(\SplFileInfo $file, string $path): string
     {
-        $prefix = trim(str_replace($path, '', $file->getPath()), DIRECTORY_SEPARATOR);
+        $prefix = \trim(\str_replace($path, '', $file->getPath()), DIRECTORY_SEPARATOR);
 
         if ($prefix !== '') {
-            $prefix = str_replace(DIRECTORY_SEPARATOR, '.', $prefix) . '.';
+            $prefix = \str_replace(DIRECTORY_SEPARATOR, '.', $prefix) . '.';
         }
 
         return $prefix;
@@ -59,7 +60,7 @@ class ConfigLoader
     {
         $this->filesystem->put(
             $path,
-            '<?php return ' . var_export($config, true) . ';' . PHP_EOL
+            '<?php return ' . \var_export($config, true) . ';' . PHP_EOL,
         );
     }
 }

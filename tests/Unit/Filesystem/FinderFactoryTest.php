@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Bambamboole\Framework\Unit\Filesystem;
 
 use Bambamboole\Framework\Filesystem\FinderFactory;
@@ -8,7 +10,6 @@ use Symfony\Component\Finder\Finder;
 
 class FinderFactoryTest extends TestCase
 {
-
     public function testCreate(): void
     {
         $finder = (new FinderFactory())->create();
