@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Bambamboole\Framework\Config;
 
-class Config
+class Config implements ConfigInterface
 {
     public function __construct(private array $config = [])
     {

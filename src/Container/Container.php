@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Bambamboole\Framework\Container;
 
-use Psr\Container\ContainerInterface;
-
 class Container implements ContainerInterface
 {
     /** @var array<string, Binding> */

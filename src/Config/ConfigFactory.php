@@ -16,7 +16,7 @@ class ConfigFactory
     ) {
     }
 
-    public function create(string $configFilesPath, string $cachedConfigPath, array $envFiles = []): Config
+    public function create(string $configFilesPath, string $cachedConfigPath, array $envFiles = []): ConfigInterface
     {
         if ($this->filesystem->exists($cachedConfigPath)) {
             return new Config(require $cachedConfigPath);

@@ -14,7 +14,7 @@ class ConfigLoader
     ) {
     }
 
-    public function load(string $configFilesPath, Environment $env): Config
+    public function load(string $configFilesPath, Environment $env): ConfigInterface
     {
         $config = new Config();
 
