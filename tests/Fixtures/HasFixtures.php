@@ -26,6 +26,16 @@ trait HasFixtures
         return $this->concatPath(__DIR__ . '/config', $path);
     }
 
+    protected function getRoutingFixturePath(?string $path = null): string
+    {
+        return $this->concatPath(__DIR__ . '/routing', $path);
+    }
+
+    protected function getBootstrapCacheFixturesPath(?string $path = null): string
+    {
+        return $this->concatPath(__DIR__ . '/bootstrap/cache', $path);
+    }
+
     private function concatPath($base, ?string $path = null): string
     {
         return empty($path)
