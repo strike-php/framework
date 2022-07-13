@@ -8,16 +8,21 @@ use Bambamboole\Framework\Core\Config\Config;
 use Bambamboole\Framework\Core\Config\ConfigInterface;
 use Bambamboole\Framework\Core\Container\Container;
 use Bambamboole\Framework\Core\Container\ContainerInterface;
+use Bambamboole\Framework\Core\Exception\IncompatibleModuleException;
 
 class Application implements ContainerInterface
 {
+    /** @var ModuleInterface[] */
+    private array $modules = [];
+    private bool $booted = false;
+
     public function __construct(
         private readonly string $basePath,
-        private ConfigInterface $config = new Config(),
-        private ContainerInterface $container = new Container(),
+        private readonly ContainerInterface $container = new Container(),
+        private readonly ConfigInterface $config = new Config(),
     ) {
-        $this->container->instance(ConfigInterface::class, $this->config);
-        $this->configure();
+        \date_default_timezone_set($this->config->get('app.timezone', 'UTC'));
+        $this->registerBaseBindings();
     }
 
     public function getBasePath(?string $path = null): string
@@ -42,14 +47,47 @@ class Application implements ContainerInterface
         return $this->container->has($id);
     }
 
-    protected function configure(): void
+    public function instance(string $key, mixed $instance): void
     {
-        \date_default_timezone_set($this->config->get('app.timezone', 'UTC'));
+        $this->container->instance($key, $instance);
+    }
 
-        foreach ($this->config->get('app.modules') ?? [] as $moduleClass) {
-            /** @var ModuleInterface $module */
-            $module = $this->get($moduleClass);
-            $module->load($this);
+    public function register(string $moduleClass): void
+    {
+        if (\array_key_exists($moduleClass, $this->modules)) {
+            return;
         }
+
+        $module = $this->get($moduleClass);
+
+        if (!$module instanceof ModuleInterface) {
+            throw new IncompatibleModuleException(
+                \sprintf('The class "%s" does not implement "%s"', $moduleClass, ModuleInterface::class),
+            );
+        }
+
+        $module->register();
+
+        $this->modules[$moduleClass] = $module;
+
+        if ($this->booted) {
+            $module->load();
+        }
+    }
+
+    public function boot(): void
+    {
+        if (!$this->booted) {
+            foreach ($this->modules as $module) {
+                $module->load();
+            }
+            $this->booted = true;
+        }
+    }
+
+    private function registerBaseBindings(): void
+    {
+        $this->container->instance(Application::class, $this);
+        $this->container->instance(ConfigInterface::class, $this->config);
     }
 }

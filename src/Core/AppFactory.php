@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace Bambamboole\Framework\Core;
 
 use Bambamboole\Framework\Core\Config\ConfigFactory;
+use Bambamboole\Framework\Core\Container\Container;
+use Bambamboole\Framework\Core\Container\ContainerInterface;
 use Bambamboole\Framework\Core\Filesystem\Filesystem;
+use Bambamboole\Framework\Http\Routing\RoutingModule;
 
 class AppFactory
 {
@@ -15,7 +18,6 @@ class AppFactory
 
     public function __construct(
         private readonly Filesystem $filesystem = new Filesystem(),
-        private readonly ConfigFactory $configFactory = new ConfigFactory(),
     ) {
     }
 
@@ -44,15 +46,35 @@ class AppFactory
         return $this;
     }
 
-    public function create(string $basePath): Application
+    public function create(string $basePath, ContainerInterface $container = new Container()): Application
     {
-        return new Application(
+        // we pre-bind the Filesystem on the container
+        // since it will be required many times
+        $container->instance(Filesystem::class, new Filesystem());
+
+        $app =  new Application(
             $basePath,
-            $this->configFactory->create(
-                $basePath . DIRECTORY_SEPARATOR . $this->configFilesPath,
-                $basePath . DIRECTORY_SEPARATOR . $this->cachedConfigPath,
+            $container,
+            $container->get(ConfigFactory::class)->create(
+                $this->getPath($basePath, $this->configFilesPath),
+                $this->getPath($basePath, $this->cachedConfigPath),
                 $this->envFiles,
             ),
         );
+
+        $app->register(RoutingModule::class);
+
+        return $app;
+    }
+
+    private function getPath(string $basePath, string $path): string
+    {
+        if (\str_starts_with($path, '/') || \str_starts_with($path, '\\')) {
+            return $path;
+        }
+
+        return empty($path)
+            ? $basePath
+            : $basePath . DIRECTORY_SEPARATOR . $path;
     }
 }
