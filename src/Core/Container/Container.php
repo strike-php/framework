@@ -57,9 +57,38 @@ class Container implements ContainerInterface
         }
 
         if (!\class_exists($key)) {
-            throw new \Exception('class does not exist');
+            if (\interface_exists($key)) {
+                throw new \Exception('No implementation defined for interface: ' . $key);
+            }
+            throw new \Exception('Class does not exist: ' . $key);
         }
 
-        return new $key();
+        return $this->build($key);
+    }
+
+    private function build(string $key): mixed
+    {
+        $reflector = new \ReflectionClass($key);
+
+        $constructor = $reflector->getConstructor();
+        if (\is_null($constructor)) {
+            return new $key();
+        }
+
+        $dependencies = \array_map(
+            fn (\ReflectionParameter $parameter) => $this->resolveParameter($parameter),
+            $constructor->getParameters(),
+        );
+
+        return $reflector->newInstanceArgs($dependencies);
+    }
+
+    private function resolveParameter(\ReflectionParameter $parameter): mixed
+    {
+        if ($parameter->getType() instanceof \ReflectionNamedType) {
+            return $this->make($parameter->getType()->getName());
+        }
+
+        return '';
     }
 }

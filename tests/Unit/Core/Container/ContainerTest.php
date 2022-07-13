@@ -47,6 +47,16 @@ class ContainerTest extends TestCase
         self::assertInstanceOf(SimpleTestClass::class, $instance);
         self::assertTrue($container->resolved(TestClassInterface::class));
     }
+
+    public function testItCanRecursivelyResolveDependencies()
+    {
+        $container = new Container();
+        $container->bind(TestClassInterface::class, ComplexTestClass::class);
+
+        $instance = $container->get(TestClassInterface::class);
+
+        self::assertInstanceOf(ComplexTestClass::class, $instance);
+    }
 }
 
 interface TestClassInterface
@@ -55,4 +65,11 @@ interface TestClassInterface
 
 class SimpleTestClass implements TestClassInterface
 {
+}
+
+class ComplexTestClass implements TestClassInterface
+{
+    public function __construct(SimpleTestClass $testClass)
+    {
+    }
 }
