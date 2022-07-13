@@ -18,7 +18,7 @@ class ConfigLoaderTest extends TestCase
         $loader = new ConfigLoader();
 
         $config = $loader->load(
-            $this->getConfigFixturePath('config'),
+            $this->getConfigFixturePath(),
             new Environment(['FOO' => 'bar']),
         );
 
@@ -30,7 +30,7 @@ class ConfigLoaderTest extends TestCase
         $loader = new ConfigLoader();
 
         $config = $loader->load(
-            $this->getConfigFixturePath('config'),
+            $this->getConfigFixturePath(),
             new Environment(['AWS_CLIENT_ID' => 'abc123']),
         );
 

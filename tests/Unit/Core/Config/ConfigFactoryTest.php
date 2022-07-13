@@ -16,7 +16,7 @@ class ConfigFactoryTest extends TestCase
 
     public function testItUsesTheCachedFileIfPresent(): void
     {
-        $validCacheFileName = $this->getConfigFixturePath('cache/valid-cache.php');
+        $validCacheFileName = $this->getBootstrapCacheFixturesPath('valid-cache.php');
         $filesystem = $this->createMock(Filesystem::class);
         $filesystem
             ->expects(self::once())
@@ -34,7 +34,7 @@ class ConfigFactoryTest extends TestCase
         );
 
         $factory->create(
-            $this->getConfigFixturePath('config'),
+            $this->getConfigFixturePath(),
             $validCacheFileName,
         );
     }
@@ -42,12 +42,12 @@ class ConfigFactoryTest extends TestCase
     public function testItWillDumpTheCacheIfItWasInvalid(): void
     {
         $factory = new ConfigFactory();
-        $invalidCacheFileName = $this->getConfigFixturePath('cache/invalid-config.php');
+        $invalidCacheFileName =  $this->getBootstrapCacheFixturesPath('invalid-config.php');
         self::assertFileDoesNotExist($invalidCacheFileName);
 
         $factory->create(
-            $this->getConfigFixturePath('config'),
-            $this->getConfigFixturePath('cache/invalid-config.php'),
+            $this->getConfigFixturePath(),
+            $this->getBootstrapCacheFixturesPath('invalid-config.php'),
         );
 
         self::assertFileExists($invalidCacheFileName);
