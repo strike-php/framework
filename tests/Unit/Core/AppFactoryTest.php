@@ -63,7 +63,7 @@ class AppFactoryTest extends TestCase
         self::assertSame($config, $app->get(ConfigInterface::class));
     }
 
-    public function testItCanChangeTHePathToConfigFiles(): void
+    public function testItCanChangeThePathToConfigFiles(): void
     {
         $config = new Config();
         $configFactory = $this->createMock(ConfigFactory::class);
@@ -104,6 +104,29 @@ class AppFactoryTest extends TestCase
 
         $app = (new AppFactory())
             ->withCachedConfigPath('cache/config.php')
+            ->create($this->getFixturePath(), $container);
+
+        self::assertSame($config, $app->get(ConfigInterface::class));
+    }
+
+    public function testItCanChangeThePathToTheCachedConfigFileToAnAbsoluteOne(): void
+    {
+        $config = new Config();
+        $configFactory = $this->createMock(ConfigFactory::class);
+        $configFactory
+            ->expects(self::once())
+            ->method('create')
+            ->with(
+                self::anything(),
+                '/foo',
+                [],
+            )
+            ->willReturn($config);
+        $container = new Container();
+        $container->instance(ConfigFactory::class, $configFactory);
+
+        $app = (new AppFactory())
+            ->withCachedConfigPath('/foo')
             ->create($this->getFixturePath(), $container);
 
         self::assertSame($config, $app->get(ConfigInterface::class));
