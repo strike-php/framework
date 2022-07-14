@@ -12,8 +12,10 @@ use Bambamboole\Framework\Core\ModuleInterface;
 
 class RoutingModule implements ModuleInterface
 {
-    public function __construct(private readonly Application $app)
-    {
+    public function __construct(
+        private readonly Application $app,
+        private readonly ConfigInterface $config,
+    ) {
     }
 
     public function register(): void
@@ -40,21 +42,17 @@ class RoutingModule implements ModuleInterface
 
     private function getRoutesPath(): string
     {
-        return $this->app
-            ->get(ConfigInterface::class)
-            ->get(
-                'http.routes.path',
-                $this->app->getBasePath('routes.php'),
-            );
+        return $this->config->get(
+            'http.routes.path',
+            $this->app->getBasePath('routes.php'),
+        );
     }
 
     private function getCachedRoutesPath(): string
     {
-        return $this->app
-            ->get(ConfigInterface::class)
-            ->get(
-                'http.routes.cache_path',
-                $this->app->getBasePath('bootstrap/cache/routes.php'),
-            );
+        return $this->config->get(
+            'http.routes.cache_path',
+            $this->app->getBasePath('bootstrap/cache/routes.php'),
+        );
     }
 }

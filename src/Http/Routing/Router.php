@@ -26,6 +26,21 @@ class Router implements RouterInterface
     ) {
     }
 
+    public function getRoutesPath(): string
+    {
+        return $this->routesPath;
+    }
+
+    public function getCompiledRoutesPath(): string
+    {
+        return $this->compiledRoutesPath;
+    }
+
+    public function isCacheEnabled(): bool
+    {
+        return $this->enableCache;
+    }
+
     public function loadRoutes(): void
     {
         if (!$this->urlMatcher) {
