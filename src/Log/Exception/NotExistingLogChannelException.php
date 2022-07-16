@@ -1,6 +1,6 @@
 <?php
 
-namespace Bambamboole\Framework\Log\Exception;
+namespace Strike\Framework\Log\Exception;
 
 class NotExistingLogChannelException extends \Exception
 {

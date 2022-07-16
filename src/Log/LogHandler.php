@@ -1,10 +1,10 @@
 <?php
 
-namespace Bambamboole\Framework\Log;
+namespace Strike\Framework\Log;
 
-use Bambamboole\Framework\Core\Config\ConfigInterface;
-use Bambamboole\Framework\Log\Exception\LogChannelConfigurationException;
-use Bambamboole\Framework\Log\Exception\NotExistingLogChannelException;
+use Strike\Framework\Core\Config\ConfigInterface;
+use Strike\Framework\Log\Exception\LogChannelConfigurationException;
+use Strike\Framework\Log\Exception\NotExistingLogChannelException;
 use Monolog\Handler\HandlerInterface;
 use Monolog\Handler\StreamHandler;
 use Monolog\Level;
@@ -12,7 +12,7 @@ use Monolog\Logger;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 
-class LogHandler implements LogHandlerInterface, LoggerInterface
+class LogHandler implements LogHandlerInterface
 {
     private array $loggers = [];
 
@@ -31,7 +31,7 @@ class LogHandler implements LogHandlerInterface, LoggerInterface
         return $this->loggers[$name];
     }
 
-    private function createDefaultLogger(): LoggerInterface
+    public function createDefaultLogger(): LoggerInterface
     {
         $channel = $this->getDefaultChannel();
 
@@ -43,7 +43,7 @@ class LogHandler implements LogHandlerInterface, LoggerInterface
 
     private function getDefaultChannel(): string
     {
-        return $this->config->get('logging.default', 'file');
+        return $this->config->get('logging.default', 'single');
     }
 
 
@@ -66,7 +66,7 @@ class LogHandler implements LogHandlerInterface, LoggerInterface
 
         return new StreamHandler(
             $path,
-            $this->getLogLevel($config['level']),
+            $this->getLogLevel($config['level'] ?? null),
             true,
         );
     }
@@ -78,50 +78,5 @@ class LogHandler implements LogHandlerInterface, LoggerInterface
         }
 
         return Level::fromName($level);
-    }
-
-    public function emergency(\Stringable|string $message, array $context = []): void
-    {
-        $this->createDefaultLogger()->emergency($message, $context);
-    }
-
-    public function alert(\Stringable|string $message, array $context = []): void
-    {
-        $this->createDefaultLogger()->alert($message, $context);
-    }
-
-    public function critical(\Stringable|string $message, array $context = []): void
-    {
-        $this->createDefaultLogger()->critical($message, $context);
-    }
-
-    public function error(\Stringable|string $message, array $context = []): void
-    {
-        $this->createDefaultLogger()->error($message, $context);
-    }
-
-    public function warning(\Stringable|string $message, array $context = []): void
-    {
-        $this->createDefaultLogger()->warning($message, $context);
-    }
-
-    public function notice(\Stringable|string $message, array $context = []): void
-    {
-        $this->createDefaultLogger()->notice($message, $context);
-    }
-
-    public function info(\Stringable|string $message, array $context = []): void
-    {
-        $this->createDefaultLogger()->info($message, $context);
-    }
-
-    public function debug(\Stringable|string $message, array $context = []): void
-    {
-        $this->createDefaultLogger()->debug($message, $context);
-    }
-
-    public function log($level, \Stringable|string $message, array $context = []): void
-    {
-        $this->createDefaultLogger()->log($level, $message, $context);
     }
 }

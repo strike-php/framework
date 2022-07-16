@@ -9,6 +9,7 @@ use Strike\Framework\Core\Container\Container;
 use Strike\Framework\Core\Container\ContainerInterface;
 use Strike\Framework\Core\Filesystem\Filesystem;
 use Strike\Framework\Http\Routing\RoutingModule;
+use Strike\Framework\Log\LoggingModule;
 
 class AppFactory
 {
@@ -63,6 +64,7 @@ class AppFactory
         );
 
         $app->register(RoutingModule::class);
+        $app->register(LoggingModule::class);
 
         return $app;
     }

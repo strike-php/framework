@@ -1,11 +1,10 @@
 <?php
 
-namespace Bambamboole\Framework\Log;
+namespace Strike\Framework\Log;
 
-use Bambamboole\Framework\Core\Application;
-use Bambamboole\Framework\Core\Config\ConfigInterface;
-use Bambamboole\Framework\Core\Container\ContainerInterface;
-use Bambamboole\Framework\Core\ModuleInterface;
+use Strike\Framework\Core\Application;
+use Strike\Framework\Core\Container\ContainerInterface;
+use Strike\Framework\Core\ModuleInterface;
 use Psr\Log\LoggerInterface;
 
 class LoggingModule implements ModuleInterface
