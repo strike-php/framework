@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Strike\Framework\Log;
 
 use Strike\Framework\Core\Config\ConfigInterface;
@@ -18,13 +20,12 @@ class LogHandler implements LogHandlerInterface
 
     public function __construct(
         private readonly ConfigInterface $config,
-    )
-    {
+    ) {
     }
 
     public function createLogger(string $name, ?array $config = []): LoggerInterface
     {
-        if (!array_key_exists($name, $this->loggers)) {
+        if (!\array_key_exists($name, $this->loggers)) {
             $this->loggers[$name] = new Logger($name, [$this->createMonologHandler($name, $config)]);
         }
 
@@ -37,7 +38,7 @@ class LogHandler implements LogHandlerInterface
 
         return $this->createLogger(
             $channel,
-            $this->config->get("logging.channels.{$channel}", [])
+            $this->config->get("logging.channels.{$channel}", []),
         );
     }
 
@@ -46,13 +47,12 @@ class LogHandler implements LogHandlerInterface
         return $this->config->get('logging.default', 'single');
     }
 
-
     private function createMonologHandler($name, array $config): HandlerInterface
     {
         return match ($name) {
             'single' => $this->createSingleFileStreamHandler($config),
             default => throw new NotExistingLogChannelException(
-                sprintf('Log channel "%s" not configured', $name)
+                \sprintf('Log channel "%s" not configured', $name),
             ),
         };
     }
@@ -60,7 +60,7 @@ class LogHandler implements LogHandlerInterface
     private function createSingleFileStreamHandler(array $config): HandlerInterface
     {
         $path = $config['path'] ?? $this->config->get('app.base_path');
-        if (is_null($path)) {
+        if (\is_null($path)) {
             throw new LogChannelConfigurationException('No path defined for single log driver');
         }
 
@@ -73,7 +73,7 @@ class LogHandler implements LogHandlerInterface
 
     private function getLogLevel(LogLevel|string|null $level = null): Level
     {
-        if (is_null($level)) {
+        if (\is_null($level)) {
             return Level::Debug;
         }
 
