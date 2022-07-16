@@ -40,6 +40,6 @@ class TestMiddleware implements MiddlewareInterface
 {
     public function handle(Request $request, \Closure $next): Response
     {
-        return new Response;
+        return new Response();
     }
 }

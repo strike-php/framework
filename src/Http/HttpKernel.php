@@ -19,8 +19,7 @@ class HttpKernel
         private readonly Application $app,
         private readonly Router $router,
         private readonly ConfigInterface $config,
-    )
-    {
+    ) {
     }
 
     public function boot(): void
@@ -53,7 +52,7 @@ class HttpKernel
     {
         return $this->config->get(
             'http.middlewares',
-            [TrustedHostsMiddleware::class, TrustedProxiesMiddleware::class]
+            [TrustedHostsMiddleware::class, TrustedProxiesMiddleware::class],
         );
     }
 }
