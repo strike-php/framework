@@ -22,6 +22,7 @@ class Application implements ContainerInterface
         private readonly ConfigInterface $config = new Config(),
     ) {
         \date_default_timezone_set($this->config->get('app.timezone', 'UTC'));
+        $this->config->set('app.base_path', $this->basePath);
         $this->registerBaseBindings();
     }
 
