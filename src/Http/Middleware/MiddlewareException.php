@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Bambamboole\Framework\Http\Middleware;
+namespace Strike\Framework\Http\Middleware;
 
 class MiddlewareException extends \Exception
 {

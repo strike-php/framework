@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Bambamboole\Framework\Http;
+namespace Strike\Framework\Http;
 
-use Bambamboole\Framework\Core\Application;
-use Bambamboole\Framework\Core\Config\ConfigInterface;
-use Bambamboole\Framework\Http\Middleware\MiddlewareStack;
-use Bambamboole\Framework\Http\Middleware\TrustedHostsMiddleware;
-use Bambamboole\Framework\Http\Middleware\TrustedProxiesMiddleware;
-use Bambamboole\Framework\Http\Routing\Router;
+use Strike\Framework\Core\Application;
+use Strike\Framework\Core\Config\ConfigInterface;
+use Strike\Framework\Http\Middleware\MiddlewareStack;
+use Strike\Framework\Http\Middleware\TrustedHostsMiddleware;
+use Strike\Framework\Http\Middleware\TrustedProxiesMiddleware;
+use Strike\Framework\Http\Routing\Router;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 

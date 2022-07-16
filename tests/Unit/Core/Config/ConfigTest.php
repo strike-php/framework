@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Tests\Bambamboole\Framework\Unit\Core\Config;
+namespace Tests\Strike\Framework\Unit\Core\Config;
 
-use Bambamboole\Framework\Core\Config\Config;
+use Strike\Framework\Core\Config\Config;
 use PHPUnit\Framework\TestCase;
 
 class ConfigTest extends TestCase

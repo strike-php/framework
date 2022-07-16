@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Bambamboole\Framework\Fixtures;
+namespace Tests\Strike\Framework\Fixtures;
 
 trait HasFixtures
 {

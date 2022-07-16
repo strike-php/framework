@@ -1,19 +1,19 @@
 {
-    "name": "bambamboole/framework",
+    "name": "strike/framework",
     "autoload": {
         "psr-4": {
-            "Bambamboole\\Framework\\": "src/"
+            "Strike\\Framework\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\Bambamboole\\Framework\\": "tests/"
+            "Tests\\Strike\\Framework\\": "tests/"
         }
     },
     "authors": [
         {
             "name": "bambamboole",
-            "email": "manuel.christlieb@xentral.com"
+            "email": "manuel@christlieb.eu"
         }
     ],
     "require": {

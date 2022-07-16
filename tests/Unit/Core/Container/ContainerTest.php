@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Tests\Bambamboole\Framework\Unit\Core\Container;
+namespace Tests\Strike\Framework\Unit\Core\Container;
 
-use Bambamboole\Framework\Core\Container\Container;
+use Strike\Framework\Core\Container\Container;
 use PHPUnit\Framework\TestCase;
 
 class ContainerTest extends TestCase

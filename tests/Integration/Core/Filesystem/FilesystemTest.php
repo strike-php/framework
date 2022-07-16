@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Tests\Bambamboole\Framework\Integration\Core\Filesystem;
+namespace Tests\Strike\Framework\Integration\Core\Filesystem;
 
-use Bambamboole\Framework\Core\Filesystem\Filesystem;
+use Strike\Framework\Core\Filesystem\Filesystem;
 use PHPUnit\Framework\TestCase;
-use Tests\Bambamboole\Framework\Fixtures\HasFixtures;
+use Tests\Strike\Framework\Fixtures\HasFixtures;
 
 class FilesystemTest extends TestCase
 {

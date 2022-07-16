@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Bambamboole\Framework\Core\Container;
+namespace Strike\Framework\Core\Container;
 
 use Psr\Container\ContainerInterface as PsrContainerInterface;
 

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Bambamboole\Framework\Core\Config;
+namespace Strike\Framework\Core\Config;
 
-use Bambamboole\Framework\Core\Environment\Environment;
-use Bambamboole\Framework\Core\Filesystem\Filesystem;
+use Strike\Framework\Core\Environment\Environment;
+use Strike\Framework\Core\Filesystem\Filesystem;
 
 class ConfigLoader
 {

@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Bambamboole\Framework\Http\Routing;
+namespace Strike\Framework\Http\Routing;
 
-use Bambamboole\Framework\Core\Application;
-use Bambamboole\Framework\Core\Config\ConfigInterface;
-use Bambamboole\Framework\Core\Container\ContainerInterface;
-use Bambamboole\Framework\Core\Filesystem\Filesystem;
-use Bambamboole\Framework\Core\ModuleInterface;
+use Strike\Framework\Core\Application;
+use Strike\Framework\Core\Config\ConfigInterface;
+use Strike\Framework\Core\Container\ContainerInterface;
+use Strike\Framework\Core\Filesystem\Filesystem;
+use Strike\Framework\Core\ModuleInterface;
 
 class RoutingModule implements ModuleInterface
 {

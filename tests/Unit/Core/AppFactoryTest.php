@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Tests\Bambamboole\Framework\Unit\Core;
+namespace Tests\Strike\Framework\Unit\Core;
 
-use Bambamboole\Framework\Core\AppFactory;
-use Bambamboole\Framework\Core\Config\Config;
-use Bambamboole\Framework\Core\Config\ConfigFactory;
-use Bambamboole\Framework\Core\Config\ConfigInterface;
-use Bambamboole\Framework\Core\Container\Container;
+use Strike\Framework\Core\AppFactory;
+use Strike\Framework\Core\Config\Config;
+use Strike\Framework\Core\Config\ConfigFactory;
+use Strike\Framework\Core\Config\ConfigInterface;
+use Strike\Framework\Core\Container\Container;
 use PHPUnit\Framework\TestCase;
-use Tests\Bambamboole\Framework\Fixtures\HasFixtures;
+use Tests\Strike\Framework\Fixtures\HasFixtures;
 
 class AppFactoryTest extends TestCase
 {

@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Bambamboole\Framework\Core;
+namespace Strike\Framework\Core;
 
-use Bambamboole\Framework\Core\Config\Config;
-use Bambamboole\Framework\Core\Config\ConfigInterface;
-use Bambamboole\Framework\Core\Container\Container;
-use Bambamboole\Framework\Core\Container\ContainerInterface;
-use Bambamboole\Framework\Core\Exception\IncompatibleModuleException;
+use Strike\Framework\Core\Config\Config;
+use Strike\Framework\Core\Config\ConfigInterface;
+use Strike\Framework\Core\Container\Container;
+use Strike\Framework\Core\Container\ContainerInterface;
+use Strike\Framework\Core\Exception\IncompatibleModuleException;
 
 class Application implements ContainerInterface
 {

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-/** @var $routes \Bambamboole\Framework\Http\Routing\RouteRegistrar */
+/** @var $routes \Strike\Framework\Http\Routing\RouteRegistrar */
 
 $routes
-    ->get('/', \Tests\Bambamboole\Framework\Fixtures\Classes\TestController::class)
+    ->get('/', \Tests\Strike\Framework\Fixtures\Classes\TestController::class)
     ->setName('test.routes');
 
 $routes
-    ->post('/{id}', \Tests\Bambamboole\Framework\Fixtures\Classes\TestController::class)
+    ->post('/{id}', \Tests\Strike\Framework\Fixtures\Classes\TestController::class)
     ->setName('test.routes.post');

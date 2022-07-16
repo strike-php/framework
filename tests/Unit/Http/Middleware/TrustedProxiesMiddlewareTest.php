@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Tests\Bambamboole\Framework\Unit\Http\Middleware;
+namespace Tests\Strike\Framework\Unit\Http\Middleware;
 
-use Bambamboole\Framework\Core\Config\ConfigInterface;
-use Bambamboole\Framework\Http\Middleware\TrustedProxiesMiddleware;
+use Strike\Framework\Core\Config\ConfigInterface;
+use Strike\Framework\Http\Middleware\TrustedProxiesMiddleware;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

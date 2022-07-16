@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Bambamboole\Framework\Http\Middleware;
+namespace Strike\Framework\Http\Middleware;
 
-use Bambamboole\Framework\Core\Config\ConfigInterface;
+use Strike\Framework\Core\Config\ConfigInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 

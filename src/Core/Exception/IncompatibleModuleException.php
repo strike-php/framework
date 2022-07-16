@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Bambamboole\Framework\Core\Exception;
+namespace Strike\Framework\Core\Exception;
 
 class IncompatibleModuleException extends \Exception
 {

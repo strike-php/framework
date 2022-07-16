@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Tests\Bambamboole\Framework\Unit\Core\Environment;
+namespace Tests\Strike\Framework\Unit\Core\Environment;
 
-use Bambamboole\Framework\Core\Environment\Environment;
+use Strike\Framework\Core\Environment\Environment;
 use PHPUnit\Framework\TestCase;
 
 class EnvironmentTest extends TestCase

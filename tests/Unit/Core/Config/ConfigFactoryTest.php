@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Tests\Bambamboole\Framework\Unit\Core\Config;
+namespace Tests\Strike\Framework\Unit\Core\Config;
 
-use Bambamboole\Framework\Core\Config\ConfigFactory;
-use Bambamboole\Framework\Core\Config\ConfigLoader;
-use Bambamboole\Framework\Core\Filesystem\Filesystem;
+use Strike\Framework\Core\Config\ConfigFactory;
+use Strike\Framework\Core\Config\ConfigLoader;
+use Strike\Framework\Core\Filesystem\Filesystem;
 use PHPUnit\Framework\TestCase;
-use Tests\Bambamboole\Framework\Fixtures\HasFixtures;
+use Tests\Strike\Framework\Fixtures\HasFixtures;
 
 class ConfigFactoryTest extends TestCase
 {

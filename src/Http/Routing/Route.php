@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Bambamboole\Framework\Http\Routing;
+namespace Strike\Framework\Http\Routing;
 
 class Route
 {

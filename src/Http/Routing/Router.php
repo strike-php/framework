@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Bambamboole\Framework\Http\Routing;
+namespace Strike\Framework\Http\Routing;
 
-use Bambamboole\Framework\Core\Filesystem\Filesystem;
+use Strike\Framework\Core\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Matcher\CompiledUrlMatcher;
 use Symfony\Component\Routing\Matcher\Dumper\CompiledUrlMatcherDumper;

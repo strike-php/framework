@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Bambamboole\Framework\Core\Filesystem;
+namespace Strike\Framework\Core\Filesystem;
 
 use Symfony\Component\Finder\Finder;
 

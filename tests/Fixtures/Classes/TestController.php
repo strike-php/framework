@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Bambamboole\Framework\Fixtures\Classes;
+namespace Tests\Strike\Framework\Fixtures\Classes;
 
 class TestController
 {

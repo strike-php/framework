@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Tests\Bambamboole\Framework\Unit\Http\Routing;
+namespace Tests\Strike\Framework\Unit\Http\Routing;
 
-use Bambamboole\Framework\Core\Application;
-use Bambamboole\Framework\Core\Config\ConfigInterface;
-use Bambamboole\Framework\Core\Container\ContainerInterface;
-use Bambamboole\Framework\Core\Filesystem\Filesystem;
-use Bambamboole\Framework\Http\Routing\Router;
-use Bambamboole\Framework\Http\Routing\RouteRegistrar;
-use Bambamboole\Framework\Http\Routing\RoutingModule;
+use Strike\Framework\Core\Application;
+use Strike\Framework\Core\Config\ConfigInterface;
+use Strike\Framework\Core\Container\ContainerInterface;
+use Strike\Framework\Core\Filesystem\Filesystem;
+use Strike\Framework\Http\Routing\Router;
+use Strike\Framework\Http\Routing\RouteRegistrar;
+use Strike\Framework\Http\Routing\RoutingModule;
 use PHPUnit\Framework\TestCase;
 
 class RoutingModuleTest extends TestCase

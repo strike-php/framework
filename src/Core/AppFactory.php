@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Bambamboole\Framework\Core;
+namespace Strike\Framework\Core;
 
-use Bambamboole\Framework\Core\Config\ConfigFactory;
-use Bambamboole\Framework\Core\Container\Container;
-use Bambamboole\Framework\Core\Container\ContainerInterface;
-use Bambamboole\Framework\Core\Filesystem\Filesystem;
-use Bambamboole\Framework\Http\Routing\RoutingModule;
+use Strike\Framework\Core\Config\ConfigFactory;
+use Strike\Framework\Core\Container\Container;
+use Strike\Framework\Core\Container\ContainerInterface;
+use Strike\Framework\Core\Filesystem\Filesystem;
+use Strike\Framework\Http\Routing\RoutingModule;
 
 class AppFactory
 {

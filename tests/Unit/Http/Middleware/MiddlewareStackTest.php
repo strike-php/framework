@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Tests\Bambamboole\Framework\Unit\Http\Middleware;
+namespace Tests\Strike\Framework\Unit\Http\Middleware;
 
-use Bambamboole\Framework\Core\Container\Container;
-use Bambamboole\Framework\Http\Middleware\MiddlewareInterface;
-use Bambamboole\Framework\Http\Middleware\MiddlewareStack;
+use Strike\Framework\Core\Container\Container;
+use Strike\Framework\Http\Middleware\MiddlewareInterface;
+use Strike\Framework\Http\Middleware\MiddlewareStack;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Bambamboole\Framework\Core\Environment;
+namespace Strike\Framework\Core\Environment;
 
 use Dotenv\Dotenv;
 use Dotenv\Repository\Adapter\PutenvAdapter;

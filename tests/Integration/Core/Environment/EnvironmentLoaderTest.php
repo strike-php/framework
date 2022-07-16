@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Tests\Bambamboole\Framework\Integration\Core\Environment;
+namespace Tests\Strike\Framework\Integration\Core\Environment;
 
-use Bambamboole\Framework\Core\Environment\EnvironmentLoader;
+use Strike\Framework\Core\Environment\EnvironmentLoader;
 use PHPUnit\Framework\TestCase;
-use Tests\Bambamboole\Framework\Fixtures\HasFixtures;
+use Tests\Strike\Framework\Fixtures\HasFixtures;
 
 class EnvironmentLoaderTest extends TestCase
 {

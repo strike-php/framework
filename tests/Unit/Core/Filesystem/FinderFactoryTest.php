@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Tests\Bambamboole\Framework\Unit\Core\Filesystem;
+namespace Tests\Strike\Framework\Unit\Core\Filesystem;
 
-use Bambamboole\Framework\Core\Filesystem\FinderFactory;
+use Strike\Framework\Core\Filesystem\FinderFactory;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Finder;
 

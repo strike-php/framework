@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Bambamboole\Framework\Core\Config;
+namespace Strike\Framework\Core\Config;
 
-use Bambamboole\Framework\Core\Environment\Environment;
+use Strike\Framework\Core\Environment\Environment;
 
 interface ConfigLoaderInterface
 {

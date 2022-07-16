@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Tests\Bambamboole\Framework\Integration\Core\Config;
+namespace Tests\Strike\Framework\Integration\Core\Config;
 
-use Bambamboole\Framework\Core\Config\ConfigLoader;
-use Bambamboole\Framework\Core\Environment\Environment;
+use Strike\Framework\Core\Config\ConfigLoader;
+use Strike\Framework\Core\Environment\Environment;
 use PHPUnit\Framework\TestCase;
-use Tests\Bambamboole\Framework\Fixtures\HasFixtures;
+use Tests\Strike\Framework\Fixtures\HasFixtures;
 
 class ConfigLoaderTest extends TestCase
 {

@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Tests\Bambamboole\Framework\Unit\Http\Routing;
+namespace Tests\Strike\Framework\Unit\Http\Routing;
 
-use Bambamboole\Framework\Core\Filesystem\Filesystem;
-use Bambamboole\Framework\Http\Routing\Router;
-use Bambamboole\Framework\Http\Routing\RouteRegistrar;
+use Strike\Framework\Core\Filesystem\Filesystem;
+use Strike\Framework\Http\Routing\Router;
+use Strike\Framework\Http\Routing\RouteRegistrar;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
-use Tests\Bambamboole\Framework\Fixtures\Classes\TestController;
-use Tests\Bambamboole\Framework\Fixtures\HasFixtures;
+use Tests\Strike\Framework\Fixtures\Classes\TestController;
+use Tests\Strike\Framework\Fixtures\HasFixtures;
 
 class RouterTest extends TestCase
 {

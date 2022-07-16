@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Tests\Bambamboole\Framework\Unit\Core;
+namespace Tests\Strike\Framework\Unit\Core;
 
-use Bambamboole\Framework\Core\Application;
-use Bambamboole\Framework\Core\Config\Config;
-use Bambamboole\Framework\Core\Container\Container;
-use Bambamboole\Framework\Core\Exception\IncompatibleModuleException;
-use Bambamboole\Framework\Core\Filesystem\FinderFactory;
-use Bambamboole\Framework\Core\ModuleInterface;
-use Bambamboole\Framework\Http\Routing\RoutingModule;
+use Strike\Framework\Core\Application;
+use Strike\Framework\Core\Config\Config;
+use Strike\Framework\Core\Container\Container;
+use Strike\Framework\Core\Exception\IncompatibleModuleException;
+use Strike\Framework\Core\Filesystem\FinderFactory;
+use Strike\Framework\Core\ModuleInterface;
+use Strike\Framework\Http\Routing\RoutingModule;
 use PHPUnit\Framework\TestCase;
 
 class ApplicationTest extends TestCase

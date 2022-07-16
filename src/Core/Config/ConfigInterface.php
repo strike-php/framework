@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Bambamboole\Framework\Core\Config;
+namespace Strike\Framework\Core\Config;
 
 interface ConfigInterface
 {

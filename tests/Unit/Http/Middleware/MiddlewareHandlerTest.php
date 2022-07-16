@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Tests\Bambamboole\Framework\Unit\Http\Middleware;
+namespace Tests\Strike\Framework\Unit\Http\Middleware;
 
-use Bambamboole\Framework\Http\Middleware\MiddlewareException;
-use Bambamboole\Framework\Http\Middleware\MiddlewareHandler;
-use Bambamboole\Framework\Http\Middleware\MiddlewareInterface;
+use Strike\Framework\Http\Middleware\MiddlewareException;
+use Strike\Framework\Http\Middleware\MiddlewareHandler;
+use Strike\Framework\Http\Middleware\MiddlewareInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
