@@ -6,7 +6,10 @@ namespace Tests\Strike\Framework\Unit\Core;
 
 use Strike\Framework\Core\Application;
 use Strike\Framework\Core\Config\Config;
+use Strike\Framework\Core\Config\ConfigInterface;
 use Strike\Framework\Core\Container\Container;
+use Strike\Framework\Core\Exception\ExceptionHandler;
+use Strike\Framework\Core\Exception\ExceptionHandlerInterface;
 use Strike\Framework\Core\Exception\IncompatibleModuleException;
 use Strike\Framework\Core\Filesystem\FinderFactory;
 use Strike\Framework\Core\ModuleInterface;
@@ -144,6 +147,27 @@ class ApplicationTest extends TestCase
         $app->boot();
 
         $app->register(Testmodule::class);
+    }
+
+    public function testItBindsItselfOntoTheContainer(): void
+    {
+        $app = new Application('/test');
+
+        self::assertSame($app, $app->get(Application::class));
+    }
+
+    public function testItBindsTheExceptionHandlerInterface(): void
+    {
+        $app = new Application('/test');
+
+        self::assertInstanceOf(ExceptionHandler::class, $app->get(ExceptionHandlerInterface::class));
+    }
+
+    public function testItBindsThConfigInterface(): void
+    {
+        $app = new Application('/test');
+
+        self::assertInstanceOf(Config::class, $app->get(ConfigInterface::class));
     }
 }
 

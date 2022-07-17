@@ -8,6 +8,8 @@ use Strike\Framework\Core\Config\Config;
 use Strike\Framework\Core\Config\ConfigInterface;
 use Strike\Framework\Core\Container\Container;
 use Strike\Framework\Core\Container\ContainerInterface;
+use Strike\Framework\Core\Exception\ExceptionHandler;
+use Strike\Framework\Core\Exception\ExceptionHandlerInterface;
 use Strike\Framework\Core\Exception\IncompatibleModuleException;
 
 class Application implements ContainerInterface
@@ -90,5 +92,11 @@ class Application implements ContainerInterface
     {
         $this->container->instance(Application::class, $this);
         $this->container->instance(ConfigInterface::class, $this->config);
+        $this->container->bind(
+            ExceptionHandlerInterface::class,
+            fn (ContainerInterface $container) => new ExceptionHandler(
+                $container->get(ConfigInterface::class)->get('app.debug', false),
+            ),
+        );
     }
 }
