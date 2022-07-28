@@ -59,7 +59,7 @@ class LogHandler implements LogHandlerInterface
 
     private function createSingleFileStreamHandler(array $config): HandlerInterface
     {
-        $path = $config['path'] ?? $this->config->get('app.base_path');
+        $path = $config['path'] ?? null;
         if (\is_null($path)) {
             throw new LogChannelConfigurationException('No path defined for single log driver');
         }
