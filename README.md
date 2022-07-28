@@ -5,7 +5,10 @@
 A simple web application framework for PHP.
 
 ## Features
-* config (environment)
-* Dependency Injection with auto resolution
-* routing
-  * middleware
+* Fast routing
+  * middleware support
+* Dependency Injection Container
+  * with auto resolution
+* config
+  * with support of .env files
+* logging
