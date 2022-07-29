@@ -1,5 +1,8 @@
 {
     "name": "strike/framework",
+    "license": "MIT",
+    "keywords": ["strike", "framework", "lean"],
+    "homepage": "https://github.com/strike-php",
     "autoload": {
         "psr-4": {
             "Strike\\Framework\\": "src/"
