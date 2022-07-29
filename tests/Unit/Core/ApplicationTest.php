@@ -105,7 +105,7 @@ class ApplicationTest extends TestCase
 
         $app = new Application('/test');
         $app->instance(RoutingModule::class, $routingModule);
-        $app->register(RoutingModule::class);
+        $app->registerModule(RoutingModule::class);
 
         $app->boot();
         $app->boot();
@@ -121,8 +121,8 @@ class ApplicationTest extends TestCase
         $app = new Application('/test');
         $app->instance(RoutingModule::class, $routingModule);
 
-        $app->register(RoutingModule::class);
-        $app->register(RoutingModule::class);
+        $app->registerModule(RoutingModule::class);
+        $app->registerModule(RoutingModule::class);
     }
 
     public function testItThrowsAnExceptionIfModuleDoesNotImplementModuleInterface(): void
@@ -130,7 +130,7 @@ class ApplicationTest extends TestCase
         $app = new Application('/test');
         self::expectException(IncompatibleModuleException::class);
 
-        $app->register(InvalidTestModule::class);
+        $app->registerModule(InvalidTestModule::class);
     }
 
     public function testModuleWillBeLoadedOnRegistrationAfterBoot(): void
@@ -146,7 +146,7 @@ class ApplicationTest extends TestCase
         $app->instance(Testmodule::class, $moduleMock);
         $app->boot();
 
-        $app->register(Testmodule::class);
+        $app->registerModule(Testmodule::class);
     }
 
     public function testItBindsItselfOntoTheContainer(): void

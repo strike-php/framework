@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Strike\Framework\Core;
 
+use Strike\Framework\Cli\StrikeCli;
 use Strike\Framework\Core\Config\Config;
 use Strike\Framework\Core\Config\ConfigInterface;
 use Strike\Framework\Core\Container\Container;
@@ -55,7 +56,7 @@ class Application implements ContainerInterface
         $this->container->instance($key, $instance);
     }
 
-    public function register(string $moduleClass): void
+    public function registerModule(string $moduleClass): void
     {
         if (\array_key_exists($moduleClass, $this->modules)) {
             return;

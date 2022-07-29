@@ -63,8 +63,8 @@ class AppFactory
             ),
         );
 
-        $app->register(RoutingModule::class);
-        $app->register(LoggingModule::class);
+        $app->registerModule(RoutingModule::class);
+        $app->registerModule(LoggingModule::class);
 
         return $app;
     }
