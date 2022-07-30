@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Strike\Framework\Http\Routing;
 
-use Strike\Framework\Core\Application;
-use Strike\Framework\Core\Config\ConfigInterface;
+use Strike\Framework\Core\ApplicationInterface;
 use Strike\Framework\Core\Container\ContainerInterface;
 use Strike\Framework\Core\Filesystem\Filesystem;
 use Strike\Framework\Core\ModuleInterface;
@@ -13,8 +12,7 @@ use Strike\Framework\Core\ModuleInterface;
 class RoutingModule implements ModuleInterface
 {
     public function __construct(
-        private readonly Application $app,
-        private readonly ConfigInterface $config,
+        private readonly ApplicationInterface $app,
     ) {
     }
 
@@ -26,8 +24,8 @@ class RoutingModule implements ModuleInterface
             fn (ContainerInterface $container) => new Router(
                 $container->get(RouteRegistrar::class),
                 $container->get(Filesystem::class),
-                $this->getRoutesPath(),
-                $this->getCachedRoutesPath(),
+                $this->app->getRoutesPath(),
+                $this->app->getCachedRoutesPath(),
             ),
             true,
         );
@@ -38,21 +36,5 @@ class RoutingModule implements ModuleInterface
         /** @var Router $router */
         $router = $this->app->get(Router::class);
         $router->loadRoutes();
-    }
-
-    private function getRoutesPath(): string
-    {
-        return $this->config->get(
-            'http.routes.path',
-            $this->app->getBasePath('routes.php'),
-        );
-    }
-
-    private function getCachedRoutesPath(): string
-    {
-        return $this->config->get(
-            'http.routes.cache_path',
-            $this->app->getBasePath('bootstrap/cache/routes.php'),
-        );
     }
 }
