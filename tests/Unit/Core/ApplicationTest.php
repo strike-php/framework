@@ -5,11 +5,10 @@ declare(strict_types=1);
 namespace Tests\Strike\Framework\Unit\Core;
 
 use Strike\Framework\Core\Application;
-use Strike\Framework\Core\Config\Config;
-use Strike\Framework\Core\Config\ConfigInterface;
+use Strike\Framework\Core\ApplicationInterface;
+use Strike\Framework\Core\BootstrapperInterface;
 use Strike\Framework\Core\Container\Container;
-use Strike\Framework\Core\Exception\ExceptionHandler;
-use Strike\Framework\Core\Exception\ExceptionHandlerInterface;
+use Strike\Framework\Core\Exception\IncompatibleBootstrapperException;
 use Strike\Framework\Core\Exception\IncompatibleModuleException;
 use Strike\Framework\Core\Filesystem\FinderFactory;
 use Strike\Framework\Core\ModuleInterface;
@@ -29,22 +28,15 @@ class ApplicationTest extends TestCase
         self::assertEquals($basePath . '/foo', $app->getBasePath('\\foo'));
     }
 
-    public function testItSetsTheCorrectTimezone(): void
+    public function testItProvidesRelevantPaths(): void
     {
-        \date_default_timezone_set('Europe/Berlin');
+        $basePath = '/test';
+        $app = new Application($basePath);
 
-        new Application('/test');
-
-        self::assertEquals('UTC', \date_default_timezone_get());
-    }
-
-    public function testDefaultTimezoneCanBeConfiguredViaConfig(): void
-    {
-        \date_default_timezone_set('UTC');
-
-        new Application(basePath: '/test', config: new Config(['app' => ['timezone' => 'Europe/Berlin']]));
-
-        self::assertEquals('Europe/Berlin', \date_default_timezone_get());
+        self::assertStringStartsWith($basePath, $app->getConfigPath());
+        self::assertStringStartsWith($basePath, $app->getCachedConfigPath());
+        self::assertStringStartsWith($basePath, $app->getRoutesPath());
+        self::assertStringStartsWith($basePath, $app->getCachedRoutesPath());
     }
 
     public function testItPipesGetCallsToTheContainer(): void
@@ -84,6 +76,30 @@ class ApplicationTest extends TestCase
         $app->has(FinderFactory::class);
     }
 
+    public function testItPipesBindCallsToTheContainer(): void
+    {
+        $container = $this->createMock(Container::class);
+        $app = new Application('/test', $container);
+        $container
+            ->expects(self::once())
+            ->method('bind')
+            ->with(FinderFactory::class);
+
+        $app->bind(FinderFactory::class, fn () => '');
+    }
+
+    public function testItPipesSingletonCallsToTheContainer(): void
+    {
+        $container = $this->createMock(Container::class);
+        $app = new Application('/test', $container);
+        $container
+            ->expects(self::once())
+            ->method('singleton')
+            ->with(FinderFactory::class);
+
+        $app->singleton(FinderFactory::class, fn () => '');
+    }
+
     public function testItPipesContainerCalls(): void
     {
         $container = $this->createMock(Container::class);
@@ -103,9 +119,9 @@ class ApplicationTest extends TestCase
             ->expects(self::once())
             ->method('load');
 
-        $app = new Application('/test');
+        $app = new Application('/test', bootstrappers: []);
         $app->instance(RoutingModule::class, $routingModule);
-        $app->register(RoutingModule::class);
+        $app->registerModule(RoutingModule::class);
 
         $app->boot();
         $app->boot();
@@ -118,19 +134,19 @@ class ApplicationTest extends TestCase
             ->expects(self::once())
             ->method('register');
 
-        $app = new Application('/test');
+        $app = new Application('/test', bootstrappers: []);
         $app->instance(RoutingModule::class, $routingModule);
 
-        $app->register(RoutingModule::class);
-        $app->register(RoutingModule::class);
+        $app->registerModule(RoutingModule::class);
+        $app->registerModule(RoutingModule::class);
     }
 
     public function testItThrowsAnExceptionIfModuleDoesNotImplementModuleInterface(): void
     {
-        $app = new Application('/test');
+        $app = new Application('/test', bootstrappers: []);
         self::expectException(IncompatibleModuleException::class);
 
-        $app->register(InvalidTestModule::class);
+        $app->registerModule(InvalidTestModule::class);
     }
 
     public function testModuleWillBeLoadedOnRegistrationAfterBoot(): void
@@ -142,11 +158,11 @@ class ApplicationTest extends TestCase
         $moduleMock
             ->expects(self::once())
             ->method('load');
-        $app = new Application('/test');
+        $app = new Application('/test', bootstrappers: []);
         $app->instance(Testmodule::class, $moduleMock);
         $app->boot();
 
-        $app->register(Testmodule::class);
+        $app->registerModule(Testmodule::class);
     }
 
     public function testItBindsItselfOntoTheContainer(): void
@@ -154,20 +170,41 @@ class ApplicationTest extends TestCase
         $app = new Application('/test');
 
         self::assertSame($app, $app->get(Application::class));
+        self::assertSame($app, $app->get(ApplicationInterface::class));
     }
 
-    public function testItBindsTheExceptionHandlerInterface(): void
+    public function testItCallsBootstrapOnABootstrapperInstance(): void
     {
-        $app = new Application('/test');
+        $bootstrapper = $this->createMock(BootstrapperInterface::class);
+        $app = new Application('/test', bootstrappers: [$bootstrapper]);
+        $bootstrapper
+            ->expects(self::once())
+            ->method('bootstrap')
+            ->with($app);
 
-        self::assertInstanceOf(ExceptionHandler::class, $app->get(ExceptionHandlerInterface::class));
+        $app->boot();
     }
 
-    public function testItBindsThConfigInterface(): void
+    public function testItResolvesTheBootstrapperViaTheContainer(): void
     {
-        $app = new Application('/test');
+        $bootstrapper = $this->createMock(BootstrapperInterface::class);
+        $app = new Application('/test', bootstrappers: ['\\Tests\\BootstrapperFake']);
+        $app->instance('\\Tests\\BootstrapperFake', $bootstrapper);
+        $bootstrapper
+            ->expects(self::once())
+            ->method('bootstrap')
+            ->with($app);
 
-        self::assertInstanceOf(Config::class, $app->get(ConfigInterface::class));
+        $app->boot();
+    }
+
+    public function testItThrowsAnExceptionIfTheBootstrapperDoesNotImplementTheRightInterface(): void
+    {
+        $app = new Application('/test', bootstrappers: ['\\Tests\\BootstrapperFake']);
+        $app->instance('\\Tests\\BootstrapperFake', \stdClass::class);
+        self::expectException(IncompatibleBootstrapperException::class);
+
+        $app->boot();
     }
 }
 

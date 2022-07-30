@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Strike\Framework\Http;
 
-use Strike\Framework\Core\Application;
+use Strike\Framework\Core\ApplicationInterface;
 use Strike\Framework\Core\Config\ConfigInterface;
 use Strike\Framework\Core\Exception\ExceptionHandlerInterface;
 use Strike\Framework\Http\Middleware\MiddlewareStack;
@@ -17,9 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
 class HttpKernel
 {
     public function __construct(
-        private readonly Application $app,
-        private readonly Router $router,
-        private readonly ConfigInterface $config,
+        private readonly ApplicationInterface $app,
     ) {
     }
 
@@ -34,7 +32,7 @@ class HttpKernel
             $this->boot();
             $this->app->instance(Request::class, $request);
 
-            $match = $this->router->match($request);
+            $match = $this->app->get(Router::class)->match($request);
 
             return (new MiddlewareStack($this->app))
                 ->sendRequest($request)
@@ -55,7 +53,7 @@ class HttpKernel
 
     private function getDefaultMiddlewares(): array
     {
-        return $this->config->get(
+        return $this->app->get(ConfigInterface::class)->get(
             'http.middlewares',
             [TrustedHostsMiddleware::class, TrustedProxiesMiddleware::class],
         );

@@ -10,5 +10,7 @@ interface ContainerInterface extends PsrContainerInterface
 {
     public function bind(string $key, string|\Closure $implementation, bool $isShared = false): void;
 
+    public function singleton(string $key, string|\Closure $implementation): void;
+
     public function instance(string $key, mixed $instance): void;
 }

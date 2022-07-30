@@ -30,6 +30,11 @@ class Container implements ContainerInterface
         $this->bindings[$binding->getKey()] = $binding;
     }
 
+    public function singleton(string $key, string|\Closure $implementation): void
+    {
+        $this->bind($key, $implementation, true);
+    }
+
     public function instance(string $key, mixed $instance): void
     {
         $this->instances[$key] = $instance;
@@ -85,10 +90,17 @@ class Container implements ContainerInterface
 
     private function resolveParameter(\ReflectionParameter $parameter): mixed
     {
-        if ($parameter->getType() instanceof \ReflectionNamedType) {
-            return $this->make($parameter->getType()->getName());
+        if (!$parameter->getType() instanceof \ReflectionNamedType) {
+            throw new ContainerResolutionException('don\'t know what to do', 1659174277);
         }
 
-        return '';
+        try {
+            return $this->make($parameter->getType()->getName());
+        } catch (\Throwable $e) {
+            if ($parameter->isDefaultValueAvailable()) {
+                return $parameter->getDefaultValue();
+            }
+            throw new ContainerResolutionException('No default value available', 1659174477, $e);
+        }
     }
 }
