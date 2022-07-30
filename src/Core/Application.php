@@ -4,28 +4,29 @@ declare(strict_types=1);
 
 namespace Strike\Framework\Core;
 
-use Strike\Framework\Cli\StrikeCli;
-use Strike\Framework\Core\Config\Config;
-use Strike\Framework\Core\Config\ConfigInterface;
+use Strike\Framework\Core\Config\ConfigBootstrapper;
 use Strike\Framework\Core\Container\Container;
 use Strike\Framework\Core\Container\ContainerInterface;
-use Strike\Framework\Core\Exception\ExceptionHandler;
-use Strike\Framework\Core\Exception\ExceptionHandlerInterface;
+use Strike\Framework\Core\Exception\ExceptionBootstrapper;
+use Strike\Framework\Core\Exception\IncompatibleBootstrapperException;
 use Strike\Framework\Core\Exception\IncompatibleModuleException;
 
-class Application implements ContainerInterface
+class Application implements ApplicationInterface
 {
     /** @var ModuleInterface[] */
     private array $modules = [];
     private bool $booted = false;
+    private array $commands = [];
 
     public function __construct(
         private readonly string $basePath,
         private readonly ContainerInterface $container = new Container(),
-        private readonly ConfigInterface $config = new Config(),
+        private readonly array $bootstrappers = [
+            ConfigBootstrapper::class,
+            ExceptionBootstrapper::class,
+            ModuleBootstrapper::class,
+        ],
     ) {
-        \date_default_timezone_set($this->config->get('app.timezone', 'UTC'));
-        $this->config->set('app.base_path', $this->basePath);
         $this->registerBaseBindings();
     }
 
@@ -36,9 +37,34 @@ class Application implements ContainerInterface
             : $this->basePath . DIRECTORY_SEPARATOR . \ltrim($path, '/\\');
     }
 
+    public function getConfigPath(): string
+    {
+        return $this->getBasePath('config');
+    }
+
+    public function getCachedConfigPath(): string
+    {
+        return $this->getBasePath('bootstrap/cache/config.php');
+    }
+
+    public function getRoutesPath(): string
+    {
+        return $this->getBasePath('routes.php');
+    }
+
+    public function getCachedRoutesPath(): string
+    {
+        return $this->getBasePath('bootstrap/cache/routes.php');
+    }
+
     public function bind(string $key, string|\Closure $implementation, bool $isShared = false): void
     {
         $this->container->bind($key, $implementation, $isShared);
+    }
+
+    public function singleton(string $key, string|\Closure $implementation): void
+    {
+        $this->container->singleton($key, $implementation);
     }
 
     public function get(string $id)
@@ -79,25 +105,55 @@ class Application implements ContainerInterface
         }
     }
 
-    public function boot(): void
+    public function runningInConsole(): bool
     {
-        if (!$this->booted) {
-            foreach ($this->modules as $module) {
-                $module->load();
-            }
-            $this->booted = true;
-        }
+        return \PHP_SAPI === 'cli';
     }
 
-    private function registerBaseBindings(): void
+    public function registerCommand(string $command, ?\Closure $factory = null): void
+    {
+        if (!$this->runningInConsole()) {
+            return;
+        }
+
+        $this->commands[$command] = $factory;
+    }
+
+    public function getRegisteredCommands(): array
+    {
+        return $this->commands;
+    }
+
+    public function boot(array $additionalBootstrappers = []): void
+    {
+        if ($this->booted) {
+            return;
+        }
+
+        foreach (\array_merge($this->bootstrappers, $additionalBootstrappers) as $bootstrapperClass) {
+            if ($bootstrapperClass instanceof BootstrapperInterface) {
+                $bootstrapperClass->bootstrap($this);
+                continue;
+            }
+            $bootstrapper = $this->get($bootstrapperClass);
+            if (!$bootstrapper instanceof BootstrapperInterface) {
+                throw new IncompatibleBootstrapperException(
+                    $bootstrapperClass . ' does not implement ' . BootstrapperInterface::class,
+                );
+            }
+            $bootstrapper->bootstrap($this);
+        }
+
+        foreach ($this->modules as $module) {
+            $module->load();
+        }
+
+        $this->booted = true;
+    }
+
+    protected function registerBaseBindings(): void
     {
         $this->container->instance(Application::class, $this);
-        $this->container->instance(ConfigInterface::class, $this->config);
-        $this->container->bind(
-            ExceptionHandlerInterface::class,
-            fn (ContainerInterface $container) => new ExceptionHandler(
-                $container->get(ConfigInterface::class)->get('app.debug', false),
-            ),
-        );
+        $this->container->instance(ApplicationInterface::class, $this);
     }
 }
