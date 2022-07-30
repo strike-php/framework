@@ -18,22 +18,10 @@ class CliModule implements ModuleInterface
     {
         $this->application->singleton(
             CliCommandRegistry::class,
-            fn (ContainerInterface $container) => $container->get(CliCommandRegistry::class),
+            fn (ContainerInterface $container) => new CliCommandRegistry($container),
         );
 
-        $this->application->singleton(
-            StrikeCli::class,
-            function (ContainerInterface $container) {
-                $cli = new StrikeCli();
-                $registry = $container->get(CliCommandRegistry::class);
-                foreach ($container->get(ApplicationInterface::class)->getRegisteredCommands() as $command => $factory) {
-                    $registry->add($command, $factory);
-                }
-                $cli->setCommandLoader($container->get(CliCommandRegistry::class));
-
-                return $cli;
-            },
-        );
+        $this->application->singleton(StrikeCli::class, fn () => new StrikeCli());
     }
 
     public function load(): void

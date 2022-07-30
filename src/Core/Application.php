@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Strike\Framework\Core;
 
+use Psr\Container\ContainerInterface as PsrContainerInterface;
 use Strike\Framework\Core\Config\ConfigBootstrapper;
 use Strike\Framework\Core\Container\Container;
 use Strike\Framework\Core\Container\ContainerInterface;
@@ -105,25 +106,6 @@ class Application implements ApplicationInterface
         }
     }
 
-    public function runningInConsole(): bool
-    {
-        return \PHP_SAPI === 'cli';
-    }
-
-    public function registerCommand(string $command, ?\Closure $factory = null): void
-    {
-        if (!$this->runningInConsole()) {
-            return;
-        }
-
-        $this->commands[$command] = $factory;
-    }
-
-    public function getRegisteredCommands(): array
-    {
-        return $this->commands;
-    }
-
     public function boot(array $additionalBootstrappers = []): void
     {
         if ($this->booted) {
@@ -155,5 +137,7 @@ class Application implements ApplicationInterface
     {
         $this->container->instance(Application::class, $this);
         $this->container->instance(ApplicationInterface::class, $this);
+        $this->container->instance(ContainerInterface::class, $this);
+        $this->container->instance(PsrContainerInterface::class, $this);
     }
 }

@@ -20,6 +20,9 @@ class CliCommandRegistry implements CommandLoaderInterface
 
     public function add(string $command, ?Closure $factory = null): void
     {
+        if (!\method_exists($command, 'getDefaultName')) {
+            throw new \Exception('Command seems not to extend Symfony Command');
+        }
         $signature = $command::getDefaultName();
         if (\is_null($factory)) {
             $factory = fn (ContainerInterface $container) => $container->get($command);
