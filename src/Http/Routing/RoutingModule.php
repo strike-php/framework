@@ -18,8 +18,8 @@ class RoutingModule implements ModuleInterface
 
     public function register(): void
     {
-        $this->app->bind(RouteRegistrar::class, fn () => new RouteRegistrar(), true);
-        $this->app->bind(
+        $this->app->singleton(RouteRegistrar::class, fn () => new RouteRegistrar());
+        $this->app->singleton(
             Router::class,
             fn (ContainerInterface $container) => new Router(
                 $container->get(RouteRegistrar::class),
@@ -27,7 +27,6 @@ class RoutingModule implements ModuleInterface
                 $this->app->getRoutesPath(),
                 $this->app->getCachedRoutesPath(),
             ),
-            true,
         );
     }
 
