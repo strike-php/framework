@@ -41,7 +41,7 @@ class ContainerTest extends TestCase
     public function testItCanRegisterSingletons(): void
     {
         $container = new Container();
-        $container->instance(TestClassInterface::class, new SimpleTestClass(), true);
+        $container->singleton(TestClassInterface::class, fn () => new SimpleTestClass());
 
         $instance = $container->get(TestClassInterface::class);
 

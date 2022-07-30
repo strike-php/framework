@@ -30,6 +30,11 @@ class Container implements ContainerInterface
         $this->bindings[$binding->getKey()] = $binding;
     }
 
+    public function singleton(string $key, string|\Closure $implementation): void
+    {
+        $this->bind($key, $implementation, true);
+    }
+
     public function instance(string $key, mixed $instance): void
     {
         $this->instances[$key] = $instance;
