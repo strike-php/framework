@@ -12,3 +12,5 @@ A simple web application framework for PHP.
 * config
   * with support of .env files
 * logging
+* CLI
+  * based on symfony/console
