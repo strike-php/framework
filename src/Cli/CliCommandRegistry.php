@@ -20,7 +20,6 @@ class CliCommandRegistry implements CommandLoaderInterface
 
     public function add(string $command, ?Closure $factory = null): void
     {
-        // @FIXME can we catch that ?
         $signature = $command::getDefaultName();
         if (\is_null($factory)) {
             $factory = fn (ContainerInterface $container) => $container->get($command);

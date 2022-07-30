@@ -38,6 +38,5 @@ class CliModule implements ModuleInterface
 
     public function load(): void
     {
-        // TODO: Implement load() method.
     }
 }
