@@ -58,6 +58,11 @@ class Application implements ApplicationInterface
         return $this->getBasePath('bootstrap/cache/routes.php');
     }
 
+    public function getDocumentRoot(): string
+    {
+        return $this->getBasePath('public');
+    }
+
     public function bind(string $key, string|\Closure $implementation, bool $isShared = false): void
     {
         $this->container->bind($key, $implementation, $isShared);

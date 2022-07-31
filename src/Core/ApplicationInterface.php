@@ -18,6 +18,8 @@ interface ApplicationInterface extends ContainerInterface
 
     public function getCachedRoutesPath(): string;
 
+    public function getDocumentRoot(): string;
+
     public function registerModule(string $moduleClass): void;
 
     public function boot(): void;
