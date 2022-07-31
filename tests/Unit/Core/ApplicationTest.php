@@ -37,6 +37,7 @@ class ApplicationTest extends TestCase
         self::assertStringStartsWith($basePath, $app->getCachedConfigPath());
         self::assertStringStartsWith($basePath, $app->getRoutesPath());
         self::assertStringStartsWith($basePath, $app->getCachedRoutesPath());
+        self::assertStringStartsWith($basePath, $app->getDocumentRoot());
     }
 
     public function testItPipesGetCallsToTheContainer(): void
