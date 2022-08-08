@@ -6,6 +6,8 @@ namespace Tests\Strike\Framework\Unit\Core;
 
 use Strike\Framework\Core\Application;
 use Strike\Framework\Core\ApplicationInterface;
+use Strike\Framework\Core\ApplicationPaths;
+use Strike\Framework\Core\ApplicationPathsInterface;
 use Strike\Framework\Core\BootstrapperInterface;
 use Strike\Framework\Core\Container\Container;
 use Strike\Framework\Core\Exception\IncompatibleBootstrapperException;
@@ -172,6 +174,13 @@ class ApplicationTest extends TestCase
 
         self::assertSame($app, $app->get(Application::class));
         self::assertSame($app, $app->get(ApplicationInterface::class));
+    }
+
+    public function testItBindsApplicationPathsInterfaceOnTheContainer(): void
+    {
+        $app = new Application('/test');
+
+        self::assertInstanceOf(ApplicationPaths::class, $app->get(ApplicationPathsInterface::class));
     }
 
     public function testItCallsBootstrapOnABootstrapperInstance(): void

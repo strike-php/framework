@@ -140,6 +140,7 @@ class Application implements ApplicationInterface
     protected function registerBaseBindings(): void
     {
         $this->container->instance(Application::class, $this);
+        $this->container->instance(ApplicationPathsInterface::class, $this->path);
         $this->container->instance(ApplicationInterface::class, $this);
         $this->container->instance(ContainerInterface::class, $this);
         $this->container->instance(PsrContainerInterface::class, $this);
