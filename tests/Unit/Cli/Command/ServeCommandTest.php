@@ -42,7 +42,12 @@ class ServeCommandTest extends TestCase
             ->willReturn($process);
         $process
             ->expects(self::once())
-            ->method('run');
+            ->method('start');
+        // We break out of the while loop via returning false from the isRunning method.
+        $process
+            ->expects(self::once())
+            ->method('isRunning')
+            ->willReturn(false);
 
         $command = new ServeCommand($app, $processFactory, $phpExecutableFinder);
 

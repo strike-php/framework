@@ -12,7 +12,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\PhpExecutableFinder;
-use Symfony\Component\Process\Process;
 
 #[AsCommand('serve', 'Starts a simple PHP web server to kickstart development')]
 class ServeCommand extends Command
@@ -38,18 +37,17 @@ class ServeCommand extends Command
 
     public function execute(InputInterface $input, OutputInterface $output): int
     {
-        $command = $this
+        $process = $this
             ->processFactory
             ->getInstance($this->getArguments($input));
 
-        $command->run(function ($type, $buffer) use ($output) {
-            if (Process::ERR === $type) {
-                $output->writeln('Process error: ' . $buffer);
-
-                return;
-            }
+        $process->start(function ($type, $buffer) use ($output) {
             $output->writeln($buffer);
         });
+
+        while ($process->isRunning()) {
+            \usleep(300 * 1000);
+        }
 
         return 0;
     }
