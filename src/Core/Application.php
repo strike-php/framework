@@ -17,7 +17,6 @@ class Application implements ApplicationInterface
     /** @var ModuleInterface[] */
     private array $modules = [];
     private bool $booted = false;
-    private array $commands = [];
 
     public function __construct(
         private readonly string $basePath,
