@@ -17,9 +17,10 @@ class Application implements ApplicationInterface
     /** @var ModuleInterface[] */
     private array $modules = [];
     private bool $booted = false;
+    private ApplicationPathsInterface $path;
 
     public function __construct(
-        private readonly string $basePath,
+        string|ApplicationPathsInterface $path,
         private readonly ContainerInterface $container = new Container(),
         private readonly array $bootstrappers = [
             ConfigBootstrapper::class,
@@ -27,39 +28,38 @@ class Application implements ApplicationInterface
             ModuleBootstrapper::class,
         ],
     ) {
+        $this->path = \is_string($path) ? new ApplicationPaths($path) : $path;
         $this->registerBaseBindings();
     }
 
     public function getBasePath(?string $path = null): string
     {
-        return empty($path)
-            ? $this->basePath
-            : $this->basePath . DIRECTORY_SEPARATOR . \ltrim($path, '/\\');
+        return $this->path->getBasePath($path);
     }
 
     public function getConfigPath(): string
     {
-        return $this->getBasePath('etc/config');
+        return $this->path->getConfigPath();
     }
 
     public function getRoutesPath(): string
     {
-        return $this->getBasePath('etc/routes.php');
+        return $this->path->getRoutesPath();
     }
 
     public function getCachedConfigPath(): string
     {
-        return $this->getBasePath('var/cache/cached-config.php');
+        return $this->path->getCachedConfigPath();
     }
 
     public function getCachedRoutesPath(): string
     {
-        return $this->getBasePath('var/cache/cached-routes.php');
+        return $this->path->getCachedRoutesPath();
     }
 
     public function getDocumentRoot(): string
     {
-        return $this->getBasePath('public');
+        return $this->path->getDocumentRoot();
     }
 
     public function bind(string $key, string|\Closure $implementation, bool $isShared = false): void
