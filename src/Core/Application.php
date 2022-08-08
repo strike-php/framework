@@ -39,22 +39,22 @@ class Application implements ApplicationInterface
 
     public function getConfigPath(): string
     {
-        return $this->getBasePath('config');
-    }
-
-    public function getCachedConfigPath(): string
-    {
-        return $this->getBasePath('bootstrap/cache/config.php');
+        return $this->getBasePath('etc/config');
     }
 
     public function getRoutesPath(): string
     {
-        return $this->getBasePath('routes.php');
+        return $this->getBasePath('etc/routes.php');
+    }
+
+    public function getCachedConfigPath(): string
+    {
+        return $this->getBasePath('var/cache/cached-config.php');
     }
 
     public function getCachedRoutesPath(): string
     {
-        return $this->getBasePath('bootstrap/cache/routes.php');
+        return $this->getBasePath('var/cache/cached-routes.php');
     }
 
     public function getDocumentRoot(): string
