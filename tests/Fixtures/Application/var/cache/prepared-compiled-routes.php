@@ -10,7 +10,7 @@ declare(strict_types=1);
 return [
     false, // $matchHost
     [ // $staticRoutes
-        '/' => [[['_route' => 'test.routes', '_controller' => 'Tests\\Strike\\Framework\\Fixtures\\Classes\\TestController'], null, ['GET' => 0], null, false, false, null]],
+        '/' => [[['_route' => 'test.routes', '_controller' => 'Tests\\Strike\\Framework\\Fixtures\\Application\\App\\Http\\TestController'], null, ['GET' => 0], null, false, false, null]],
     ],
     [ // $regexpList
         0 => '{^(?'
@@ -19,7 +19,7 @@ return [
     ],
     [ // $dynamicRoutes
         16 => [
-            [['_route' => 'test.routes.post', '_controller' => 'Tests\\Strike\\Framework\\Fixtures\\Classes\\TestController'], ['id'], ['POST' => 0], null, false, true, null],
+            [['_route' => 'test.routes.post', '_controller' => 'Tests\\Strike\\Framework\\Fixtures\\Application\\App\\Http\\TestController'], ['id'], ['POST' => 0], null, false, true, null],
             [null, null, null, null, false, false, 0],
         ],
     ],

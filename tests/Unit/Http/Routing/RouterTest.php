@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Strike\Framework\Unit\Http\Routing;
 
+use PHPUnit\Framework\TestCase;
 use Strike\Framework\Core\Filesystem\Filesystem;
 use Strike\Framework\Http\Routing\Router;
 use Strike\Framework\Http\Routing\RouteRegistrar;
-use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
-use Tests\Strike\Framework\Fixtures\Classes\TestController;
+use Tests\Strike\Framework\Fixtures\Application\App\Http\TestController;
 use Tests\Strike\Framework\Fixtures\HasFixtures;
 
 class RouterTest extends TestCase
@@ -21,8 +21,8 @@ class RouterTest extends TestCase
         $router = new Router(
             new RouteRegistrar(),
             new Filesystem(),
-            $this->getRoutingFixturePath('routes.php'),
-            $this->getBootstrapCacheFixturesPath('compiled-routes.php'),
+            $this->getTestingApplicationBasePath('etc/routes.php'),
+            $this->getCacheFixturesPath('compiled-routes.php'),
             false,
         );
 
@@ -40,28 +40,28 @@ class RouterTest extends TestCase
         $router = new Router(
             new RouteRegistrar(),
             new Filesystem(),
-            $this->getRoutingFixturePath('routes.php'),
-            $this->getBootstrapCacheFixturesPath('compiled-routes.php'),
+            $this->getTestingApplicationBasePath('etc/routes.php'),
+            $this->getCacheFixturesPath('compiled-routes.php'),
             true,
         );
 
-        self::assertFileDoesNotExist($this->getBootstrapCacheFixturesPath('compiled-routes.php'));
+        self::assertFileDoesNotExist($this->getCacheFixturesPath('compiled-routes.php'));
         $router->loadRoutes();
 
         $match = $router->match(Request::create('/1', 'POST'));
 
         self::assertEquals(TestController::class, $match->getHandler());
-        self::assertFileExists($this->getBootstrapCacheFixturesPath('compiled-routes.php'));
+        self::assertFileExists($this->getCacheFixturesPath('compiled-routes.php'));
     }
 
     public function testItLoadTheCompiledRoutesOnlyOnce(): void
     {
-        self::assertFileExists($this->getBootstrapCacheFixturesPath('prepared-compiled-routes.php'));
+        self::assertFileExists($this->getCacheFixturesPath('prepared-compiled-routes.php'));
         $filesystem = $this->createMock(Filesystem::class);
         $filesystem
             ->expects(self::once())
             ->method('exists')
-            ->with($this->getBootstrapCacheFixturesPath('prepared-compiled-routes.php'))
+            ->with($this->getCacheFixturesPath('prepared-compiled-routes.php'))
             ->willReturn(true);
         $filesystem
             ->expects(self::never())
@@ -69,8 +69,8 @@ class RouterTest extends TestCase
         $router = new Router(
             new RouteRegistrar(),
             $filesystem,
-            $this->getRoutingFixturePath('routes.php'),
-            $this->getBootstrapCacheFixturesPath('prepared-compiled-routes.php'),
+            $this->getTestingApplicationBasePath('etc/routes.php'),
+            $this->getCacheFixturesPath('prepared-compiled-routes.php'),
             true,
         );
 
@@ -79,6 +79,6 @@ class RouterTest extends TestCase
 
     protected function tearDown(): void
     {
-        @\unlink($this->getBootstrapCacheFixturesPath('compiled-routes.php'));
+        @\unlink($this->getCacheFixturesPath('compiled-routes.php'));
     }
 }

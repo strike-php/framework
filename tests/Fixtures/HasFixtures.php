@@ -11,29 +11,24 @@ trait HasFixtures
         return $this->concatPath(__DIR__, $path);
     }
 
-    protected function getEnvironmentFixturePath(?string $path = null): string
+    protected function getTestingApplicationBasePath(?string $path = null): string
     {
-        return $this->concatPath(__DIR__ . '/environment', $path);
+        return $this->concatPath(__DIR__ . '/Application', $path);
     }
 
     protected function getFilesystemFixturePath(?string $path = null): string
     {
-        return $this->concatPath(__DIR__ . '/filesystem', $path);
+        return $this->concatPath($this->getTestingApplicationBasePath('var/storage'), $path);
     }
 
-    protected function getConfigFixturePath(?string $path = null): string
+    protected function getConfigFixturePath(): string
     {
-        return $this->concatPath(__DIR__ . '/config', $path);
+        return $this->getTestingApplicationBasePath('/etc/config');
     }
 
-    protected function getRoutingFixturePath(?string $path = null): string
+    protected function getCacheFixturesPath(?string $path = null): string
     {
-        return $this->concatPath(__DIR__ . '/routing', $path);
-    }
-
-    protected function getBootstrapCacheFixturesPath(?string $path = null): string
-    {
-        return $this->concatPath(__DIR__ . '/bootstrap/cache', $path);
+        return $this->concatPath($this->getTestingApplicationBasePath('var/cache'), $path);
     }
 
     private function concatPath($base, ?string $path = null): string

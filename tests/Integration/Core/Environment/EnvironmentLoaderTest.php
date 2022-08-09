@@ -21,7 +21,7 @@ class EnvironmentLoaderTest extends TestCase
     public function testItLoadsValuesFromEnvFiles(): void
     {
         $loader = new EnvironmentLoader();
-        $files = [new \SplFileInfo($this->getEnvironmentFixturePath('.env'))];
+        $files = [new \SplFileInfo($this->getTestingApplicationBasePath('.env'))];
         $env = $loader->load($files);
 
         // FOO is a key in the loaded .env file
@@ -33,8 +33,8 @@ class EnvironmentLoaderTest extends TestCase
         $loader = new EnvironmentLoader();
 
         $files = [
-            new \SplFileInfo($this->getEnvironmentFixturePath('.env')),
-            new \SplFileInfo($this->getEnvironmentFixturePath('.env-2')),
+            new \SplFileInfo($this->getTestingApplicationBasePath('.env')),
+            new \SplFileInfo($this->getTestingApplicationBasePath('.env-2')),
         ];
         $env = $loader->load($files);
 
