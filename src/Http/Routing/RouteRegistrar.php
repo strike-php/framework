@@ -28,9 +28,30 @@ class RouteRegistrar
         return $this->addRoute(HttpMethod::GET, $path, $controller);
     }
 
+    public function head(string $path, string $controller): Route
+    {
+        return $this->addRoute(HttpMethod::HEAD, $path, $controller);
+    }
+
+    public function put(string $path, string $controller): Route
+    {
+        return $this->addRoute(HttpMethod::PUT, $path, $controller);
+    }
+
+    public function patch(string $path, string $controller): Route
+    {
+        return $this->addRoute(HttpMethod::PATCH, $path, $controller);
+    }
+
     public function post(string $path, string $controller): Route
     {
         return $this->addRoute(HttpMethod::POST, $path, $controller);
+    }
+
+    /** @return Route[] */
+    public function getRoutes(): array
+    {
+        return $this->routes;
     }
 
     public function getCollection(): RouteCollection
@@ -38,8 +59,6 @@ class RouteRegistrar
         $collection = new RouteCollection();
         foreach ($this->routes as $i => $route) {
             $symfonyRoute = $this->createSymfonyRoute($route);
-            $symfonyRoute->setMethods($route->getHttpMethod()->value);
-            $symfonyRoute->setDefault('_controller', $route->getController());
             $collection->add($route->getName(), $symfonyRoute);
         }
 
@@ -48,6 +67,12 @@ class RouteRegistrar
 
     private function createSymfonyRoute(Route $route): SymfonyRoute
     {
-        return new SymfonyRoute($route->getPath());
+        return new SymfonyRoute(
+            path: $route->getPath(),
+            defaults: [
+                '_controller' => $route->getController(),
+            ],
+            methods: $route->getHttpMethod()->value,
+        );
     }
 }
