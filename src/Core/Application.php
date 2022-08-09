@@ -20,7 +20,7 @@ class Application implements ApplicationInterface
     private ApplicationPathsInterface $path;
 
     public function __construct(
-        string|ApplicationPathsInterface $path,
+        string|ApplicationPathsInterface $basePath,
         private readonly ContainerInterface $container = new Container(),
         private readonly array $bootstrappers = [
             ConfigBootstrapper::class,
@@ -28,7 +28,7 @@ class Application implements ApplicationInterface
             ModuleBootstrapper::class,
         ],
     ) {
-        $this->path = \is_string($path) ? new ApplicationPaths($path) : $path;
+        $this->path = \is_string($basePath) ? new ApplicationPaths($basePath) : $basePath;
         $this->registerBaseBindings();
     }
 
