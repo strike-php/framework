@@ -19,7 +19,7 @@ class Environment
     {
         return match (\gettype($value)) {
             'string' => $this->castString($value),
-            'integer' => $value,
+            'boolean', 'integer' => $value,
             default => throw new \Exception('Cast from type not yet implemented :('),
         };
     }
