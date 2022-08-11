@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Strike\Framework\Unit\Core\Config;
 
+use Strike\Framework\Core\Config\Config;
 use Strike\Framework\Core\Config\ConfigFactory;
 use Strike\Framework\Core\Config\ConfigLoader;
 use Strike\Framework\Core\Filesystem\Filesystem;
@@ -13,6 +14,29 @@ use Tests\Strike\Framework\Fixtures\HasFixtures;
 class ConfigFactoryTest extends TestCase
 {
     use HasFixtures;
+
+    public function testItDoesNotCheckTheCachedFileIfCacheIsDisabled(): void
+    {
+        $configLoader = $this->createMock(ConfigLoader::class);
+        $configLoader
+            ->expects(self::once())
+            ->method('load')
+            ->willReturn(new Config());
+        $filesystem = $this->createMock(Filesystem::class);
+        $filesystem
+            ->expects(self::never())
+            ->method('exists');
+        $factory = new ConfigFactory(
+            filesystem: $filesystem,
+            configLoader: $configLoader,
+            enableCache: false,
+        );
+
+        $factory->create(
+            $this->getConfigFixturePath(),
+            '',
+        );
+    }
 
     public function testItUsesTheCachedFileIfPresent(): void
     {
@@ -42,7 +66,7 @@ class ConfigFactoryTest extends TestCase
     public function testItWillDumpTheCacheIfItWasInvalid(): void
     {
         $factory = new ConfigFactory();
-        $invalidCacheFileName =  $this->getCacheFixturesPath('invalid-config.php');
+        $invalidCacheFileName = $this->getCacheFixturesPath('invalid-config.php');
         self::assertFileDoesNotExist($invalidCacheFileName);
 
         $factory->create(
