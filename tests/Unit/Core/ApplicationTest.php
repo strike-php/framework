@@ -19,6 +19,11 @@ use PHPUnit\Framework\TestCase;
 
 class ApplicationTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        CallbackAssertion::$executed = false;
+    }
+
     public function testGetBasePath(): void
     {
         $basePath = '/test';
@@ -216,6 +221,37 @@ class ApplicationTest extends TestCase
 
         $app->boot();
     }
+
+    public function testItExecutesAfterBootCallbacks(): void
+    {
+        $app = new Application('/test', bootstrappers: []);
+        $callback = function () {
+            CallbackAssertion::$executed = true;
+        };
+        $app->afterBoot($callback);
+
+        $app->boot();
+
+        self::assertTrue(CallbackAssertion::$executed);
+    }
+
+    public function testItExecutesAfterBootCallbacksDirectlyIfApplicationWasBooted(): void
+    {
+        $app = new Application('/test', bootstrappers: []);
+        $callback = function () {
+            CallbackAssertion::$executed = true;
+        };
+        $app->boot();
+
+        $app->afterBoot($callback);
+
+        self::assertTrue(CallbackAssertion::$executed);
+    }
+}
+
+class CallbackAssertion
+{
+    public static bool $executed = false;
 }
 
 class Testmodule implements ModuleInterface

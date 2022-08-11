@@ -35,11 +35,3 @@ class MiddlewareStackTest extends TestCase
         self::assertSame($response, $result);
     }
 }
-
-class TestMiddleware implements MiddlewareInterface
-{
-    public function handle(Request $request, \Closure $next): Response
-    {
-        return new Response();
-    }
-}

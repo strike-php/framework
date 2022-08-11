@@ -23,4 +23,6 @@ interface ApplicationInterface extends ContainerInterface
     public function registerModule(string $moduleClass): void;
 
     public function boot(): void;
+
+    public function afterBoot(\Closure $bootCallback): self;
 }

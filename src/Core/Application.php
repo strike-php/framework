@@ -17,6 +17,8 @@ class Application implements ApplicationInterface
     /** @var ModuleInterface[] */
     private array $modules = [];
     private bool $booted = false;
+    /** @var \Closure[] */
+    private array $bootedCallbacks = [];
     private ApplicationPathsInterface $path;
 
     public function __construct(
@@ -134,7 +136,22 @@ class Application implements ApplicationInterface
             $module->load();
         }
 
+        foreach ($this->bootedCallbacks as $callback) {
+            $callback($this);
+        }
+
         $this->booted = true;
+    }
+
+    public function afterBoot(\Closure $bootCallback): self
+    {
+        if ($this->booted) {
+            $bootCallback($this);
+        } else {
+            $this->bootedCallbacks[] = $bootCallback;
+        }
+
+        return $this;
     }
 
     protected function registerBaseBindings(): void

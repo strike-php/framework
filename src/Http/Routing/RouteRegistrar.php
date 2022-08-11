@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Strike\Framework\Http\Routing;
 
-use Symfony\Component\Routing\Route as SymfonyRoute;
 use Symfony\Component\Routing\RouteCollection;
 
 class RouteRegistrar
@@ -58,21 +57,9 @@ class RouteRegistrar
     {
         $collection = new RouteCollection();
         foreach ($this->routes as $i => $route) {
-            $symfonyRoute = $this->createSymfonyRoute($route);
-            $collection->add($route->getName(), $symfonyRoute);
+            $collection->add($route->getName(), $route->toSymfonyRoute());
         }
 
         return $collection;
-    }
-
-    private function createSymfonyRoute(Route $route): SymfonyRoute
-    {
-        return new SymfonyRoute(
-            path: $route->getPath(),
-            defaults: [
-                '_controller' => $route->getController(),
-            ],
-            methods: $route->getHttpMethod()->value,
-        );
     }
 }
