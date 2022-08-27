@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Strike\Framework\Log;
 
+use Monolog\Handler\RotatingFileHandler;
 use Strike\Framework\Core\Config\ConfigInterface;
 use Strike\Framework\Log\Exception\LogChannelConfigurationException;
 use Strike\Framework\Log\Exception\NotExistingLogChannelException;
@@ -14,7 +15,7 @@ use Monolog\Logger;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 
-class LogHandler implements LogHandlerInterface
+class LoggerFactory implements LoggerFactoryInterface
 {
     private array $loggers = [];
 
@@ -51,6 +52,7 @@ class LogHandler implements LogHandlerInterface
     {
         return match ($name) {
             'single' => $this->createSingleFileStreamHandler($config),
+            'daily' => $this->createDailyFileHandler($config),
             default => throw new NotExistingLogChannelException(
                 \sprintf('Log channel "%s" not configured', $name),
             ),
@@ -68,6 +70,21 @@ class LogHandler implements LogHandlerInterface
             $path,
             $this->getLogLevel($config['level'] ?? null),
             true,
+        );
+    }
+
+    private function createDailyFileHandler(array $config): HandlerInterface
+    {
+        $path = $config['path'] ?? null;
+        if ($path ===  null) {
+            throw new LogChannelConfigurationException('No path defined for daily log driver');
+        }
+        $days = $config['days'] ?? 7;
+
+        return new RotatingFileHandler(
+            $path,
+            $days,
+            $this->getLogLevel($config['level'] ?? null),
         );
     }
 

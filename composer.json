@@ -44,7 +44,8 @@
         "test": "vendor/bin/phpunit",
         "lint:fix": "php-cs-fixer fix --allow-risky=yes",
         "lint:show": "php-cs-fixer fix --allow-risky=yes --dry-run --diff",
-        "phpstan": "phpstan analyze --memory-limit=320M"
+        "phpstan": "phpstan analyze --memory-limit=320M",
+        "infection": "./vendor/bin/infection --logger-html='infection.html' --ignore-msi-with-no-mutations --only-covered"
     },
     "config": {
         "allow-plugins": {
