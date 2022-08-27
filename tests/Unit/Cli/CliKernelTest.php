@@ -31,6 +31,14 @@ class CliKernelTest extends TestCase
             ->method('get')
             ->withConsecutive([StrikeCli::class], [CliCommandRegistry::class], [ConfigInterface::class])
             ->willReturn($cli, $registry, new Config(['cli' => ['commands' => ['test']]]));
+        $registry
+            ->expects(self::once())
+            ->method('add')
+            ->with('test');
+        $cli
+            ->expects(self::once())
+            ->method('setCommandLoader')
+            ->with($registry);
         $cli
             ->expects(self::once())
             ->method('run')

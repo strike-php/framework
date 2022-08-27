@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Strike\Framework\Unit\Cli\Command;
 
 use Monolog\Test\TestCase;
+use PHPUnit\Framework\MockObject\MockObject;
 use Strike\Framework\Cli\Commands\ServeCommand;
 use Strike\Framework\Cli\Factory\ProcessFactory;
 use Strike\Framework\Core\ApplicationInterface;
@@ -15,11 +16,19 @@ use Symfony\Component\Process\Process;
 
 class ServeCommandTest extends TestCase
 {
+    private MockObject|ApplicationInterface $app;
+    private MockObject|ProcessFactory $processFactory;
+    private MockObject|PhpExecutableFinder $phpExecutableFinder;
+
+    protected function setUp(): void
+    {
+        $this->app = $this->createMock(ApplicationInterface::class);
+        $this->processFactory = $this->createMock(ProcessFactory::class);
+        $this->phpExecutableFinder = $this->createMock(PhpExecutableFinder::class);
+    }
+
     public function testItResolvesTheCorrectArguments(): void
     {
-        $app = $this->createMock(ApplicationInterface::class);
-        $processFactory = $this->createMock(ProcessFactory::class);
-        $phpExecutableFinder = $this->createMock(PhpExecutableFinder::class);
         $process = $this->createMock(Process::class);
         $input = $this->createMock(InputInterface::class);
         $input
@@ -27,15 +36,15 @@ class ServeCommandTest extends TestCase
             ->method('getOption')
             ->with('port')
             ->willReturn('8080');
-        $app
+        $this->app
             ->expects(self::once())
             ->method('getDocumentRoot')
             ->willReturn('/var/www/html/public');
-        $phpExecutableFinder
+        $this->phpExecutableFinder
             ->expects(self::once())
             ->method('find')
             ->willReturn('/usr/bin/php');
-        $processFactory
+        $this->processFactory
             ->expects(self::once())
             ->method('getInstance')
             ->with(['/usr/bin/php', '-S', '127.0.0.1:8080', '-t', '/var/www/html/public'])
@@ -49,11 +58,25 @@ class ServeCommandTest extends TestCase
             ->method('isRunning')
             ->willReturn(false);
 
-        $command = new ServeCommand($app, $processFactory, $phpExecutableFinder);
+        $command = $this->createServeCommand();
 
-        $command->execute(
+        $statusCode = $command->execute(
             $input,
             $this->createMock(OutputInterface::class),
         );
+
+        self::assertEquals(0, $statusCode);
+    }
+
+    public function testAPortOptionIsDeclared(): void
+    {
+        $command = $this->createServeCommand();
+
+        self::assertTrue($command->getDefinition()->hasOption('port'));
+    }
+
+    private function createServeCommand(): ServeCommand
+    {
+        return new ServeCommand($this->app, $this->processFactory, $this->phpExecutableFinder);
     }
 }
