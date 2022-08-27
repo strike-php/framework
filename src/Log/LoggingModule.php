@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Strike\Framework\Log;
 
-use Strike\Framework\Core\Application;
+use Strike\Framework\Core\ApplicationInterface;
 use Strike\Framework\Core\Container\ContainerInterface;
 use Strike\Framework\Core\ModuleInterface;
 use Psr\Log\LoggerInterface;
@@ -12,7 +12,7 @@ use Psr\Log\LoggerInterface;
 class LoggingModule implements ModuleInterface
 {
     public function __construct(
-        private readonly Application $app,
+        private readonly ApplicationInterface $app,
     ) {
     }
 

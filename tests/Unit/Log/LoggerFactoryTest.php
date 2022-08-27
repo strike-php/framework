@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Strike\Framework\Unit\Log;
 
+use Monolog\Handler\RotatingFileHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -12,9 +13,12 @@ use Strike\Framework\Core\Config\ConfigInterface;
 use Strike\Framework\Log\Exception\LogChannelConfigurationException;
 use Strike\Framework\Log\Exception\NotExistingLogChannelException;
 use Strike\Framework\Log\LoggerFactory;
+use Tests\Strike\Framework\Unit\HelpsWithClosedClasses;
 
 class LoggerFactoryTest extends TestCase
 {
+    use HelpsWithClosedClasses;
+
     private ConfigInterface|MockObject $config;
 
     protected function setUp(): void
@@ -33,7 +37,7 @@ class LoggerFactoryTest extends TestCase
     {
         self::expectException(LogChannelConfigurationException::class);
 
-        $this->createLoggerFactory()->createLogger('single', ['path' => null]);
+        $this->createLoggerFactory()->createLogger('single', []);
     }
 
     public function testTheLogLevelCanBeConfigured(): void
@@ -54,6 +58,30 @@ class LoggerFactoryTest extends TestCase
         $streamHandler = $logger->getHandlers()[0];
         self::assertInstanceOf(StreamHandler::class, $streamHandler);
         self::assertEquals('DEBUG', $streamHandler->getLevel()->getName());
+    }
+
+    public function testTheDailyDriverIsBasedOnTheRotatingFileHandler(): void
+    {
+        $logger = $this->createLoggerFactory()->createLogger('daily', ['path' => __DIR__]);
+
+        self::assertInstanceOf(Logger::class, $logger);
+        self::assertInstanceOf(RotatingFileHandler::class, $handler = $logger->popHandler());
+        // it defaults to 7 days which are the value of the maxFiles property
+        self::assertEquals(7, $this->getNonPublicProperty($handler, 'maxFiles'));
+    }
+
+    public function testNumberOfMaxFilesAreControlledViaTheDaysConfigProperty(): void
+    {
+        $logger = $this->createLoggerFactory()->createLogger('daily', ['path' => __DIR__, 'days' => 2]);
+
+        self::assertEquals(2, $this->getNonPublicProperty($logger->popHandler(), 'maxFiles'));
+    }
+
+    public function testItThrowsAnExceptionIfNoPathIsDefinedForDailyLogDriver(): void
+    {
+        self::expectException(LogChannelConfigurationException::class);
+
+        $this->createLoggerFactory()->createLogger('daily', []);
     }
 
     public function testItCanCreateTheDefaultLogger(): void
