@@ -19,13 +19,13 @@ class LoggingModule implements ModuleInterface
     public function register(): void
     {
         $this->app->bind(
-            LogHandlerInterface::class,
-            fn (ContainerInterface $container) => $container->get(LogHandler::class),
+            LoggerFactoryInterface::class,
+            fn (ContainerInterface $container) => $container->get(LoggerFactory::class),
             true,
         );
         $this->app->bind(
             LoggerInterface::class,
-            fn (ContainerInterface $container) => $container->get(LogHandlerInterface::class)->createDefaultLogger(),
+            fn (ContainerInterface $container) => $container->get(LoggerFactoryInterface::class)->createDefaultLogger(),
             true,
         );
     }

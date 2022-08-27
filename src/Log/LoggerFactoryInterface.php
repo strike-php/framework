@@ -6,7 +6,7 @@ namespace Strike\Framework\Log;
 
 use Psr\Log\LoggerInterface;
 
-interface LogHandlerInterface
+interface LoggerFactoryInterface
 {
     public function createLogger(string $name, ?array $config = []): LoggerInterface;
 

@@ -11,36 +11,34 @@ use PHPUnit\Framework\TestCase;
 use Strike\Framework\Core\Config\ConfigInterface;
 use Strike\Framework\Log\Exception\LogChannelConfigurationException;
 use Strike\Framework\Log\Exception\NotExistingLogChannelException;
-use Strike\Framework\Log\LogHandler;
+use Strike\Framework\Log\LoggerFactory;
 
-class LogHandlerTest extends TestCase
+class LoggerFactoryTest extends TestCase
 {
     private ConfigInterface|MockObject $config;
-    private LogHandler $logHandler;
 
     protected function setUp(): void
     {
         $this->config = $this->createMock(ConfigInterface::class);
-        $this->logHandler = new LogHandler($this->config);
     }
 
     public function testItThrowsAnExceptionIfTheDriverIsNotSupported(): void
     {
         self::expectException(NotExistingLogChannelException::class);
 
-        $this->logHandler->createLogger('foo');
+        $this->createLoggerFactory()->createLogger('foo');
     }
 
     public function testItThrowsAnExceptionIfNoPathIsDefinedForSingleLogDriver(): void
     {
         self::expectException(LogChannelConfigurationException::class);
 
-        $this->logHandler->createLogger('single', ['path' => null]);
+        $this->createLoggerFactory()->createLogger('single', ['path' => null]);
     }
 
     public function testTheLogLevelCanBeConfigured(): void
     {
-        $logger = $this->logHandler->createLogger('single', ['path' => __DIR__, 'level' => 'error']);
+        $logger = $this->createLoggerFactory()->createLogger('single', ['path' => __DIR__, 'level' => 'error']);
 
         self::assertInstanceOf(Logger::class, $logger);
         $streamHandler = $logger->getHandlers()[0];
@@ -50,7 +48,7 @@ class LogHandlerTest extends TestCase
 
     public function testTheLogLevelDefaultsToDebug(): void
     {
-        $logger = $this->logHandler->createLogger('single', ['path' => __DIR__]);
+        $logger = $this->createLoggerFactory()->createLogger('single', ['path' => __DIR__]);
 
         self::assertInstanceOf(Logger::class, $logger);
         $streamHandler = $logger->getHandlers()[0];
@@ -69,8 +67,13 @@ class LogHandlerTest extends TestCase
             )
             ->willReturnOnConsecutiveCalls('single', ['path' => __DIR__]);
 
-        $logger = $this->logHandler->createDefaultLogger();
+        $logger = $this->createLoggerFactory()->createDefaultLogger();
 
         self::assertInstanceOf(Logger::class, $logger);
+    }
+
+    private function createLoggerFactory(): LoggerFactory
+    {
+        return new LoggerFactory($this->config);
     }
 }

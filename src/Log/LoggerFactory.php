@@ -14,7 +14,7 @@ use Monolog\Logger;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 
-class LogHandler implements LogHandlerInterface
+class LoggerFactory implements LoggerFactoryInterface
 {
     private array $loggers = [];
 
