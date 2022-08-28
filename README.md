@@ -2,6 +2,7 @@
 [![tests](https://github.com/strike-php/framework/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/strike-php/framework/actions/workflows/tests.yml)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=strike-php_framework&metric=coverage)](https://sonarcloud.io/summary/new_code?id=strike-php_framework)
 [![Packagist version](https://img.shields.io/packagist/v/strike/framework?include_prereleases&style=flat-square)](https://sonarcloud.io/summary/new_code?id=strike-php_framework)
+![Packagist License](https://img.shields.io/packagist/l/strike/framework)
 
 **warning** Strike is a very new framework and things are up too change. there is no
 stable release yet.
